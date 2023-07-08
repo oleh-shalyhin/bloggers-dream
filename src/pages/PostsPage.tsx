@@ -1,11 +1,16 @@
+import { Link, Typography } from '@mui/material';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 function PostsPage() {
   return (
     <>
-      <h2>Posts page</h2>
-      <Link to={'/posts/1'}>Read more</Link>
+      <Typography variant="h5" component="h2">
+        Posts page
+      </Typography>
+      <Link component={RouterLink} to={'/posts/1'}>
+        Read more
+      </Link>
     </>
   );
 }
