@@ -1,3 +1,3 @@
-export * from './ChipList';
-export * from './PostCard';
-export * from './ReactionsCounter';
+export * from './ChipList/ChipList';
+export * from './PostCard/PostCard';
+export * from './ReactionsCounter/ReactionsCounter';

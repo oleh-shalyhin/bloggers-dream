@@ -1,10 +1,10 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { postCardTruncateWordsAmount } from '../constants/constants';
-import { postCard } from '../constants/testIds';
-import { Post } from '../types/types';
-import { truncateTextByWords } from '../utils/utils';
-import { ChipList, ReactionsCounter } from './';
+import { postCardTruncateWordsAmount } from '../../constants/constants';
+import { postCard } from '../../constants/testIds';
+import { Post } from '../../types/types';
+import { truncateTextByWords } from '../../utils/utils';
+import { ChipList, ReactionsCounter } from '../';
 
 interface PostCardProps {
   post: Post;

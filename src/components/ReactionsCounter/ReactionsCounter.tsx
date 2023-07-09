@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
-import { postCardReactionsAmount } from '../constants/testIds';
+import { postCardReactionsAmount } from '../../constants/testIds';
 
 interface ReactionsCounterProps {
   amount: number;

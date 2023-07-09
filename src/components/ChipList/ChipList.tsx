@@ -1,5 +1,5 @@
 import { Box, Chip, useTheme } from '@mui/material';
-import { postCardTag } from '../constants/testIds';
+import { postCardTag } from '../../constants/testIds';
 
 interface ChipListProps {
   tags: string[];
