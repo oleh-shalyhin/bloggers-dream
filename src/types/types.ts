@@ -6,3 +6,9 @@ export interface Post {
   tags: string[];
   reactions: number;
 }
+
+export interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+}
