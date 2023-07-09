@@ -1,17 +1,18 @@
-import { Link, Typography } from '@mui/material';
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Grid } from '@mui/material';
+import { PostCard } from '../components';
+import { postsResponseMock } from '../mocks';
+
+const posts = postsResponseMock.posts;
 
 function PostsPage() {
   return (
-    <>
-      <Typography variant="h5" component="h2">
-        Posts page
-      </Typography>
-      <Link component={RouterLink} to={'/posts/1'}>
-        Read more
-      </Link>
-    </>
+    <Grid container spacing={2}>
+      {posts.map((post) => (
+        <Grid key={post.id} item xs={12} md={6}>
+          <PostCard post={post} />
+        </Grid>
+      ))}
+    </Grid>
   );
 }
 
