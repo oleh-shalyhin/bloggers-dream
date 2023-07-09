@@ -1,6 +1,5 @@
 import App from './App';
-import PostsPage from './pages/PostsPage';
-import PostDetailsPage from './pages/PostDetailsPage';
+import { PostDetailsPage, PostsPage } from './pages';
 
 const routes = [
   {

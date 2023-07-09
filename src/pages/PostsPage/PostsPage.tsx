@@ -1,10 +1,10 @@
 import { Grid } from '@mui/material';
-import { PostCard } from '../components';
-import { postsResponseMock } from '../mocks';
+import { PostCard } from '../../components';
+import { postsResponseMock } from '../../mocks';
 
 const posts = postsResponseMock.posts;
 
-function PostsPage() {
+export function PostsPage() {
   return (
     <Grid container spacing={2}>
       {posts.map((post) => (
@@ -15,5 +15,3 @@ function PostsPage() {
     </Grid>
   );
 }
-
-export default PostsPage;
