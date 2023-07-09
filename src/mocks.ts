@@ -30,6 +30,41 @@ export const postsResponseMock = {
   limit: 3,
 };
 
+export const commentsResponseMock = {
+  comments: [
+    {
+      id: 1,
+      body: 'This is some awesome thinking!',
+      postId: 100,
+      user: {
+        id: 63,
+        username: 'eburras1q',
+      },
+    },
+    {
+      id: 2,
+      body: 'What terrific math skills you’re showing!',
+      postId: 27,
+      user: {
+        id: 71,
+        username: 'omarsland1y',
+      },
+    },
+    {
+      id: 3,
+      body: 'You are an amazing writer!',
+      postId: 61,
+      user: {
+        id: 29,
+        username: 'jissetts',
+      },
+    },
+  ],
+  total: 340,
+  skip: 0,
+  limit: 3,
+};
+
 export const userMock = {
   id: 1,
   firstName: 'Terry',

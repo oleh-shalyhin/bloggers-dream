@@ -21,7 +21,7 @@ beforeEach(() => {
   postCardComponent = <RouterProvider router={router} />;
 });
 
-test('renders list of posts', async () => {
+test('renders single post', async () => {
   const truncatedPostBody = `${truncateTextByWords(post.body, postCardTruncateWordsAmount)}...`;
   render(postCardComponent);
 

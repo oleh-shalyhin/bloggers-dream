@@ -11,4 +11,12 @@ export interface User {
   id: number;
   firstName: string;
   lastName: string;
+  username: string;
+}
+
+export interface Comment {
+  id: number;
+  body: string;
+  postId: number;
+  user: Pick<User, 'id' | 'username'>;
 }
