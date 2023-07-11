@@ -2,6 +2,13 @@
   "name": "bloggers-dream",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "cross-env REACT_APP_ENV=development react-scripts start",
+    "start:prod": "cross-env REACT_APP_ENV=production react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -24,13 +31,8 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "msw": "^1.2.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
