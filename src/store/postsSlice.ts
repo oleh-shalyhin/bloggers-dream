@@ -1,10 +1,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Post } from '../types/types';
+import { Post, RequestStatus } from '../types/types';
 import { RootState } from './store';
 
 interface PostsState {
   items: Post[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: RequestStatus;
   error: string | null;
 }
 
@@ -40,7 +40,7 @@ export const postsSlice = createSlice({
   },
 });
 
-export const selectPosts = (state: RootState) => state.posts.items;
+export const selectPosts = (state: RootState) => state.posts;
 
 const postsReducer = postsSlice.reducer;
 

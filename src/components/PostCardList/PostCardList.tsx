@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Alert, CircularProgress, Grid, Stack } from '@mui/material';
 import { PostCard } from '../';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -13,12 +13,22 @@ export function PostCardList() {
   }, [dispatch]);
 
   return (
-    <Grid container spacing={2}>
-      {posts.map((post) => (
-        <Grid key={post.id} item xs={12} md={6}>
-          <PostCard post={post} />
+    <Stack alignItems="center" sx={{ width: '100%' }}>
+      {posts.status === 'loading' ? (
+        <CircularProgress />
+      ) : posts.error != null ? (
+        <Alert severity="error" sx={{ width: '100%' }}>
+          {posts.error}
+        </Alert>
+      ) : (
+        <Grid container spacing={2}>
+          {posts.items.map((post) => (
+            <Grid key={post.id} item xs={12} md={6}>
+              <PostCard post={post} />
+            </Grid>
+          ))}
         </Grid>
-      ))}
-    </Grid>
+      )}
+    </Stack>
   );
 }

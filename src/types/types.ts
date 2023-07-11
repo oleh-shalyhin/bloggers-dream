@@ -20,3 +20,5 @@ export interface Comment {
   postId: number;
   user: Pick<User, 'id' | 'username'>;
 }
+
+export type RequestStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
