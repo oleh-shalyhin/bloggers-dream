@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { commentListItemAuthorIcon } from '../../constants/testIds';
-import { commentsResponseMock } from '../../mocks';
+import { commentsResponseMock } from '../../mocks/mocks';
 import { CommentListItem } from './CommentListItem';
 
 const comment = commentsResponseMock.comments[0];

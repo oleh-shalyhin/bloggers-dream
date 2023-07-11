@@ -3,7 +3,7 @@ import React from 'react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { postCardTruncateWordsAmount } from '../../constants/constants';
 import { postCardReactionsAmount, postCardTag } from '../../constants/testIds';
-import { postsResponseMock } from '../../mocks';
+import { postsResponseMock } from '../../mocks/mocks';
 import { truncateTextByWords } from '../../utils/utils';
 import { PostCard } from './PostCard';
 

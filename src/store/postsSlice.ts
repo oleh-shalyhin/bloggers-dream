@@ -15,7 +15,7 @@ const initialState: PostsState = {
 };
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-  const response = await fetch('');
+  const response = await fetch('https://dummyjson.com/posts');
   const data = await response.json();
   return data.posts;
 });

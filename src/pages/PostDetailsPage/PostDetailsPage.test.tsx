@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-import { commentsResponseMock, postsResponseMock } from '../../mocks';
+import { commentsResponseMock, postsResponseMock } from '../../mocks/mocks';
 import routes from '../../routes';
 import { commentListItem } from '../../constants/testIds';
 

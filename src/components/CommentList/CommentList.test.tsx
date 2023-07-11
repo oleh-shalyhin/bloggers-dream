@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { commentsResponseMock } from '../../mocks';
+import { commentsResponseMock } from '../../mocks/mocks';
 import { CommentList } from './CommentList';
 import { commentListItem } from '../../constants/testIds';
 

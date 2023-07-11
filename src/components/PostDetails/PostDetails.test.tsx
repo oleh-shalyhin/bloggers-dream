@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { postsResponseMock, userMock } from '../../mocks';
+import { postsResponseMock, usersResponseMock } from '../../mocks/mocks';
 import { getFullName } from '../../utils/utils';
 import { PostDetails } from './PostDetails';
 
 const post = postsResponseMock.posts[0];
-const author = userMock;
+const author = usersResponseMock.users[0];
 
 test('renders post details', async () => {
   render(<PostDetails author={author} post={post} />);
