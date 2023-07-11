@@ -1,12 +1,17 @@
 import { Grid } from '@mui/material';
-import { Post } from '../../types/types';
 import { PostCard } from '../';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { fetchPosts, selectPosts } from '../../store/postsSlice';
 
-interface PostCardListProps {
-  posts: Post[];
-}
+export function PostCardList() {
+  const posts = useAppSelector(selectPosts);
+  const dispatch = useAppDispatch();
 
-export function PostCardList({ posts }: PostCardListProps) {
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, [dispatch]);
+
   return (
     <Grid container spacing={2}>
       {posts.map((post) => (
