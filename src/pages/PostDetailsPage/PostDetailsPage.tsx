@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { CommentList, PostDetails } from '../../components';
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchPostAuthor, fetchPostComments, fetchSinglePost, selectDetailedPost } from '../../store/detailedPostSlice';
+import { fetchPostAuthor, fetchSinglePost, selectDetailedPost } from '../../store/detailedPostSlice';
 import { Post } from '../../types/types';
 
 export function PostDetailsPage() {
@@ -19,7 +19,6 @@ export function PostDetailsPage() {
     try {
       const newPost: Post = await dispatch(fetchSinglePost(+postId)).unwrap();
       await dispatch(fetchPostAuthor(newPost.userId)).unwrap();
-      await dispatch(fetchPostComments(+postId)).unwrap();
     } catch (error) {
       console.error('Failed to load post');
     }
@@ -32,7 +31,7 @@ export function PostDetailsPage() {
   return post.data ? (
     <Stack spacing={4}>
       <PostDetails post={post.data} />
-      <CommentList comments={post.data.comments} />
+      <CommentList />
     </Stack>
   ) : null;
 }

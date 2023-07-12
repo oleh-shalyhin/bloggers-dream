@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { GetPostsResponse, PageSelector, Post, RequestStatus } from '../types/types';
+import { GetPostsResponse, GetPostsRequestPayload, Post, RequestStatus } from '../types/types';
 
 interface PostsState {
   items: Post[];
@@ -16,10 +16,9 @@ const initialState: PostsState = {
   error: null,
 };
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async ({ limit, skip }: PageSelector) => {
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async ({ limit, skip }: GetPostsRequestPayload) => {
   const response = await fetch(`https://dummyjson.com/posts?limit=${limit}&skip=${skip}`);
-  const data = await response.json();
-  return data;
+  return await response.json();
 });
 
 export const postsSlice = createSlice({

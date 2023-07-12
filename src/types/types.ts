@@ -12,7 +12,13 @@ export interface GetPostCommentsResponse extends PagedResponse {
   comments: Comment[];
 }
 
-export interface PageSelector {
+export interface GetPostsRequestPayload {
+  limit: number;
+  skip: number;
+}
+
+export interface GetPostCommentsRequestPayload {
+  postId: number;
   limit: number;
   skip: number;
 }
@@ -28,7 +34,12 @@ export interface Post {
 
 export interface DetailedPost extends Post {
   userName: string;
-  comments: Comment[];
+  comments: PagedComments;
+}
+
+export interface PagedComments {
+  items: Comment[];
+  total: number;
 }
 
 export interface User {

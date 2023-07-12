@@ -25,9 +25,9 @@ export const postsResponseMock = {
       reactions: 5,
     },
   ],
-  total: 150,
+  total: 3,
   skip: 0,
-  limit: 3,
+  limit: 10,
 };
 
 export const commentsResponseMock = {
@@ -60,9 +60,9 @@ export const commentsResponseMock = {
       },
     },
   ],
-  total: 340,
+  total: 3,
   skip: 0,
-  limit: 3,
+  limit: 10,
 };
 
 export const usersResponseMock = {
@@ -252,7 +252,7 @@ export const usersResponseMock = {
       userAgent: 'Mozilla/5.0 (Windows NT 6.2; Win64; x64; rv:21.0.0) Gecko/20121011 Firefox/21.0.0',
     },
   ],
-  total: 100,
+  total: 3,
   skip: 0,
-  limit: 3,
+  limit: 10,
 };

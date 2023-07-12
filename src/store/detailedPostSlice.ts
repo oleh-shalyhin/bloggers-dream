@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Comment, DetailedPost, Post, User } from '../types/types';
 import { RootState } from './store';
+import { DetailedPost, GetPostCommentsRequestPayload, GetPostCommentsResponse, Post, User } from '../types/types';
 import { getFullName } from '../utils/utils';
 
 interface DetailedPostState {
@@ -13,21 +13,21 @@ const initialState: DetailedPostState = {
 
 export const fetchSinglePost = createAsyncThunk('posts/fetchSinglePost', async (postId: number) => {
   const response = await fetch(`https://dummyjson.com/posts/${postId}`);
-  const data = await response.json();
-  return data;
+  return await response.json();
 });
 
 export const fetchPostAuthor = createAsyncThunk('posts/fetchPostAuthor', async (userId: number) => {
   const response = await fetch(`https://dummyjson.com/users/${userId}`);
-  const data = await response.json();
-  return data;
+  return await response.json();
 });
 
-export const fetchPostComments = createAsyncThunk('posts/fetchPostComments', async (postId: number) => {
-  const response = await fetch(`https://dummyjson.com/comments/post/${postId}`);
-  const data = await response.json();
-  return data.comments;
-});
+export const fetchPostComments = createAsyncThunk(
+  'posts/fetchPostComments',
+  async ({ postId, limit, skip }: GetPostCommentsRequestPayload) => {
+    const response = await fetch(`https://dummyjson.com/comments/post/${postId}?limit=${limit}&skip=${skip}`);
+    return await response.json();
+  },
+);
 
 export const detailedPostSlice = createSlice({
   name: 'detailedPost',
@@ -39,7 +39,10 @@ export const detailedPostSlice = createSlice({
         state.data = {
           ...action.payload,
           userName: 'Unknown Author',
-          comments: [] as Comment[],
+          comments: {
+            items: [],
+            total: 0,
+          },
         };
       })
       .addCase(fetchPostAuthor.fulfilled, (state, action: PayloadAction<User>) => {
@@ -47,9 +50,12 @@ export const detailedPostSlice = createSlice({
           state.data.userName = getFullName(action.payload.firstName, action.payload.lastName);
         }
       })
-      .addCase(fetchPostComments.fulfilled, (state, action: PayloadAction<Comment[]>) => {
+      .addCase(fetchPostComments.fulfilled, (state, action: PayloadAction<GetPostCommentsResponse>) => {
         if (state.data) {
-          state.data.comments = action.payload;
+          state.data.comments = {
+            items: action.payload.comments,
+            total: action.payload.total,
+          };
         }
       });
   },

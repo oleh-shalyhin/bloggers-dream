@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { postsResponseMock } from '../../mocks/mocks';
 import { PostDetails } from './PostDetails';
 
-const post = { ...postsResponseMock.posts[0], userName: 'Test Name', comments: [] };
+const post = { ...postsResponseMock.posts[0], userName: 'Test Name', comments: { items: [], total: 0 } };
 
 test('renders post details', async () => {
   render(<PostDetails post={post} />);
