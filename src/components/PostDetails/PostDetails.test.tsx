@@ -1,15 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import { postsResponseMock, usersResponseMock } from '../../mocks/mocks';
-import { getFullName } from '../../utils/utils';
+import { postsResponseMock } from '../../mocks/mocks';
 import { PostDetails } from './PostDetails';
 
-const post = postsResponseMock.posts[0];
-const author = usersResponseMock.users[0];
+const post = { ...postsResponseMock.posts[0], userName: 'Test Name', comments: [] };
 
 test('renders post details', async () => {
-  render(<PostDetails author={author} post={post} />);
+  render(<PostDetails post={post} />);
 
   expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(post.title);
-  expect(screen.getByText(`Author: ${getFullName(author.firstName, author.lastName)}`)).toBeInTheDocument();
+  expect(screen.getByText(`Author: ${post.userName}`)).toBeInTheDocument();
   expect(screen.getByText(post.body)).toBeInTheDocument();
 });

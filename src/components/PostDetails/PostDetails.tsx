@@ -1,13 +1,11 @@
 import { Stack, Typography, useTheme } from '@mui/material';
-import { getFullName } from '../../utils/utils';
-import { Post, User } from '../../types/types';
+import { DetailedPost } from '../../types/types';
 
 interface PostDetailsProps {
-  post: Post;
-  author: User;
+  post: DetailedPost;
 }
 
-export function PostDetails({ post, author }: PostDetailsProps) {
+export function PostDetails({ post }: PostDetailsProps) {
   const theme = useTheme();
 
   return (
@@ -16,7 +14,7 @@ export function PostDetails({ post, author }: PostDetailsProps) {
         {post.title}
       </Typography>
       <Typography variant="subtitle1" sx={{ fontStyle: 'italic' }}>
-        Author: {getFullName(author.firstName, author.lastName)}
+        Author: {post.userName}
       </Typography>
       <Typography variant="body2" sx={{ mt: theme.spacing(2) }}>
         {post.body}

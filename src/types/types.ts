@@ -7,6 +7,11 @@ export interface Post {
   reactions: number;
 }
 
+export interface DetailedPost extends Post {
+  userName: string;
+  comments: Comment[];
+}
+
 export interface User {
   id: number;
   firstName: string;

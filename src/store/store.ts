@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import postsReducer from './postsSlice';
+import detailedPostReducer from './detailedPostSlice';
 
 export const store = configureStore({
   reducer: {
     posts: postsReducer,
+    detailedPost: detailedPostReducer,
   },
 });
 
