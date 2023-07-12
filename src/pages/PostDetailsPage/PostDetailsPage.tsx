@@ -1,10 +1,9 @@
 import { Stack } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { commentsResponseMock } from '../../mocks/mocks';
 import { CommentList, PostDetails } from '../../components';
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchPostAuthor, fetchSinglePost, selectDetailedPost } from '../../store/detailedPostSlice';
+import { fetchPostAuthor, fetchPostComments, fetchSinglePost, selectDetailedPost } from '../../store/detailedPostSlice';
 import { Post } from '../../types/types';
 
 export function PostDetailsPage() {
@@ -20,6 +19,7 @@ export function PostDetailsPage() {
     try {
       const newPost: Post = await dispatch(fetchSinglePost(+postId)).unwrap();
       await dispatch(fetchPostAuthor(newPost.userId)).unwrap();
+      await dispatch(fetchPostComments(+postId)).unwrap();
     } catch (error) {
       console.error('Failed to load post');
     }
@@ -29,10 +29,10 @@ export function PostDetailsPage() {
     fetchDetailedPost();
   }, [fetchDetailedPost]);
 
-  return (
+  return post.data ? (
     <Stack spacing={4}>
-      {post.data ? <PostDetails post={post.data} /> : null}
-      <CommentList comments={commentsResponseMock.comments} />
+      <PostDetails post={post.data} />
+      <CommentList comments={post.data.comments} />
     </Stack>
-  );
+  ) : null;
 }
