@@ -2,40 +2,38 @@ import { Stack } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { CommentList, PostDetails } from '../../components';
-import { fetchPostAuthor, fetchSinglePost, reset, selectDetailedPost } from '../../store/detailedPostSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { Post } from '../../types/types';
+import { fetchSinglePost, selectPostById } from '../../store/postsSlice';
 
 export function PostDetailsPage() {
   const { postId } = useParams();
-  const post = useAppSelector(selectDetailedPost);
+  const post = useAppSelector((state) => selectPostById(state, postId as string));
   const dispatch = useAppDispatch();
 
-  const fetchDetailedPost = useCallback(async () => {
+  const getPost = useCallback(async () => {
     if (!postId) {
       return;
     }
 
     try {
-      const newPost: Post = await dispatch(fetchSinglePost(+postId)).unwrap();
-      await dispatch(fetchPostAuthor(newPost.userId)).unwrap();
+      await dispatch(fetchSinglePost(+postId)).unwrap();
     } catch (error) {
       console.error('Failed to load post');
     }
   }, [postId, dispatch]);
 
   useEffect(() => {
-    fetchDetailedPost();
+    getPost();
+  }, [dispatch, getPost]);
 
-    return () => {
-      dispatch(reset());
-    };
-  }, [fetchDetailedPost]);
+  if (!post || !postId) {
+    return null;
+  }
 
-  return post.data ? (
+  return (
     <Stack spacing={4}>
-      <PostDetails post={post.data} />
-      <CommentList />
+      <PostDetails post={post} />
+      <CommentList postId={+postId} />
     </Stack>
-  ) : null;
+  );
 }

@@ -1,14 +1,21 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import { Comment } from '../../types/types';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { EntityId } from '@reduxjs/toolkit';
 import { commentListItem } from '../../constants/testIds';
+import { selectCommentById } from '../../store/commentsSlice';
+import { useAppSelector } from '../../store/hooks';
 
 interface CommentListItemProps {
-  comment: Comment;
+  commentId: EntityId;
 }
 
-export function CommentListItem({ comment }: CommentListItemProps) {
+export function CommentListItem({ commentId }: CommentListItemProps) {
   const theme = useTheme();
+  const comment = useAppSelector((state) => selectCommentById(state, commentId));
+
+  if (!comment) {
+    return null;
+  }
 
   return (
     <Stack data-testid={commentListItem}>

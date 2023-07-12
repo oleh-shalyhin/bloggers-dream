@@ -14,7 +14,7 @@ beforeEach(() => {
   const routes = [
     {
       path: '/',
-      element: <PostCard post={post} />,
+      element: <PostCard postId={post.id} />,
     },
   ];
   const router = createMemoryRouter(routes, { initialEntries: ['/'] });

@@ -6,7 +6,7 @@ import { CommentListItem } from './CommentListItem';
 const comment = commentsResponseMock.comments[0];
 
 test('renders single comment', async () => {
-  render(<CommentListItem comment={comment} />);
+  render(<CommentListItem commentId={comment.id} />);
 
   expect(screen.getByTestId(commentListItemAuthorIcon)).toBeInTheDocument();
   expect(screen.getByText(comment.user.username)).toBeInTheDocument();

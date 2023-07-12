@@ -1,16 +1,22 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
+import { EntityId } from '@reduxjs/toolkit';
 import { Link as RouterLink } from 'react-router-dom';
 import { postCardTruncateWordsAmount } from '../../constants/constants';
 import { postCard } from '../../constants/testIds';
-import { Post } from '../../types/types';
+import { useAppSelector } from '../../store/hooks';
+import { selectPostById } from '../../store/postsSlice';
 import { truncateTextByWords } from '../../utils/utils';
 import { ChipList, ReactionsCounter } from '../';
 
 interface PostCardProps {
-  post: Post;
+  postId: EntityId;
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ postId }: PostCardProps) {
+  const post = useAppSelector((state) => selectPostById(state, postId));
+
+  if (!post) return null;
+
   return (
     <Card data-testid={postCard} elevation={4} sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <CardHeader

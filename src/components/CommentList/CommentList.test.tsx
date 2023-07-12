@@ -1,13 +1,14 @@
 import { render, screen } from '@testing-library/react';
-import { commentsResponseMock } from '../../mocks/mocks';
-import { CommentList } from './CommentList';
 import { commentListItem } from '../../constants/testIds';
+import { commentsResponseMock, postsResponseMock } from '../../mocks/mocks';
+import { CommentList } from './CommentList';
 
-const comments = { items: commentsResponseMock.comments, total: commentsResponseMock.comments.length };
+const post = postsResponseMock.posts[0];
+const comments = commentsResponseMock.comments;
 
 test('renders list of comments', async () => {
-  render(<CommentList />);
+  render(<CommentList postId={post.id} />);
 
   expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(/comments/i);
-  expect(screen.getAllByTestId(commentListItem)).toHaveLength(comments.items.length);
+  expect(screen.getAllByTestId(commentListItem)).toHaveLength(comments.length);
 });
