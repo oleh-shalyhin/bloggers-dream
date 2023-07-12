@@ -16,12 +16,15 @@ const initialState = postsAdapter.getInitialState<PostsState>({
   error: null,
 });
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async ({ limit, skip }: GetPostsRequestPayload) => {
-  const response = await fetch(`https://dummyjson.com/posts?limit=${limit}&skip=${skip}`);
-  return await response.json();
-});
+export const fetchPosts = createAsyncThunk<GetPostsResponse, GetPostsRequestPayload>(
+  'posts/fetchPosts',
+  async ({ limit, skip }) => {
+    const response = await fetch(`https://dummyjson.com/posts?limit=${limit}&skip=${skip}`);
+    return await response.json();
+  },
+);
 
-export const fetchSinglePost = createAsyncThunk('posts/fetchSinglePost', async (postId: number) => {
+export const fetchSinglePost = createAsyncThunk<Post, number>('posts/fetchSinglePost', async (postId) => {
   const response = await fetch(`https://dummyjson.com/posts/${postId}`);
   return await response.json();
 });

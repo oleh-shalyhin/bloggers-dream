@@ -12,9 +12,9 @@ const initialState = commentsAdapter.getInitialState<CommentsState>({
   total: 0,
 });
 
-export const fetchPostComments = createAsyncThunk(
+export const fetchPostComments = createAsyncThunk<GetPostCommentsResponse, GetPostCommentsRequestPayload>(
   'comments/fetchPostComments',
-  async ({ postId, limit, skip }: GetPostCommentsRequestPayload) => {
+  async ({ postId, limit, skip }) => {
     const response = await fetch(`https://dummyjson.com/comments/post/${postId}?limit=${limit}&skip=${skip}`);
     return await response.json();
   },

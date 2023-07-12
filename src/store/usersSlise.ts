@@ -4,7 +4,7 @@ import { User } from '../types/types';
 
 const usersAdapter = createEntityAdapter<User>();
 
-export const fetchPostAuthor = createAsyncThunk('users/fetchPostAuthor', async (userId: number) => {
+export const fetchPostAuthor = createAsyncThunk<User, number>('users/fetchPostAuthor', async (userId) => {
   const response = await fetch(`https://dummyjson.com/users/${userId}`);
   return await response.json();
 });
