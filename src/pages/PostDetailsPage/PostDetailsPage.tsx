@@ -1,9 +1,9 @@
 import { Stack } from '@mui/material';
+import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { CommentList, PostDetails } from '../../components';
-import { useCallback, useEffect } from 'react';
+import { fetchPostAuthor, fetchSinglePost, reset, selectDetailedPost } from '../../store/detailedPostSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchPostAuthor, fetchSinglePost, selectDetailedPost } from '../../store/detailedPostSlice';
 import { Post } from '../../types/types';
 
 export function PostDetailsPage() {
@@ -26,6 +26,10 @@ export function PostDetailsPage() {
 
   useEffect(() => {
     fetchDetailedPost();
+
+    return () => {
+      dispatch(reset());
+    };
   }, [fetchDetailedPost]);
 
   return post.data ? (

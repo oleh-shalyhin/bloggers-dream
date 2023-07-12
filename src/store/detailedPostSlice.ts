@@ -32,7 +32,11 @@ export const fetchPostComments = createAsyncThunk(
 export const detailedPostSlice = createSlice({
   name: 'detailedPost',
   initialState,
-  reducers: {},
+  reducers: {
+    reset(state) {
+      state.data = null;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchSinglePost.fulfilled, (state, action: PayloadAction<Post>) => {
@@ -62,6 +66,9 @@ export const detailedPostSlice = createSlice({
 });
 
 export const selectDetailedPost = (state: RootState) => state.detailedPost;
+export const selectDetailedPostComments = (state: RootState) => state.detailedPost.data?.comments;
+
+export const { reset } = detailedPostSlice.actions;
 
 const detailedPostReducer = detailedPostSlice.reducer;
 export default detailedPostReducer;

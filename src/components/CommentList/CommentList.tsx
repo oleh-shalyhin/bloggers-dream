@@ -1,17 +1,17 @@
 import { Box, Divider, Pagination, Stack, Typography } from '@mui/material';
-import { CommentListItem } from '../';
-import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
-import { commentsPageSize } from '../../constants/constants';
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useParams } from 'react-router-dom';
-import { fetchPostComments, selectDetailedPost } from '../../store/detailedPostSlice';
+import { commentsPageSize } from '../../constants/constants';
+import { fetchPostComments, selectDetailedPostComments } from '../../store/detailedPostSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
+import { CommentListItem } from '../';
 
 export function CommentList() {
   const [page, setPage] = useState(1);
 
   const { postId } = useParams();
-  const post = useAppSelector(selectDetailedPost);
+  const comments = useAppSelector(selectDetailedPostComments);
   const dispatch = useAppDispatch();
 
   const handlePageChange = async (event: React.ChangeEvent<unknown>, value: number) => {
@@ -32,9 +32,9 @@ export function CommentList() {
       <Typography variant="h5" component="h3">
         Comments
       </Typography>
-      {post.data ? (
+      {comments ? (
         <Stack>
-          {post.data.comments.items.map((comment) => (
+          {comments.items.map((comment) => (
             <Box key={comment.id}>
               <CommentListItem comment={comment} />
               <Divider />
@@ -42,7 +42,7 @@ export function CommentList() {
           ))}
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Pagination
-              count={getPagesAmount(post.data.comments.total, commentsPageSize)}
+              count={getPagesAmount(comments.total, commentsPageSize)}
               page={page}
               onChange={handlePageChange}
             />
