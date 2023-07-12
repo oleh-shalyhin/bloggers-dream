@@ -1,8 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { DetailedPost, Post, User } from '../types/types';
+import { DetailedPost, GetPostCommentsRequestPayload, GetPostCommentsResponse, Post, User } from '../types/types';
 import { getFullName } from '../utils/utils';
-import commentsReducer from './commentsSlice';
 
 interface DetailedPostState {
   data: DetailedPost | null;
@@ -22,16 +21,18 @@ export const fetchPostAuthor = createAsyncThunk('posts/fetchPostAuthor', async (
   return await response.json();
 });
 
+export const fetchPostComments = createAsyncThunk(
+  'posts/fetchPostComments',
+  async ({ postId, limit, skip }: GetPostCommentsRequestPayload) => {
+    const response = await fetch(`https://dummyjson.com/comments/post/${postId}?limit=${limit}&skip=${skip}`);
+    return await response.json();
+  },
+);
+
 export const detailedPostSlice = createSlice({
   name: 'detailedPost',
   initialState,
-  reducers: {
-    comments(state, action) {
-      if (state.data) {
-        state.data.comments = commentsReducer(state.data.comments, action);
-      }
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchSinglePost.fulfilled, (state, action: PayloadAction<Post>) => {
@@ -47,6 +48,14 @@ export const detailedPostSlice = createSlice({
       .addCase(fetchPostAuthor.fulfilled, (state, action: PayloadAction<User>) => {
         if (state.data) {
           state.data.userName = getFullName(action.payload.firstName, action.payload.lastName);
+        }
+      })
+      .addCase(fetchPostComments.fulfilled, (state, action: PayloadAction<GetPostCommentsResponse>) => {
+        if (state.data) {
+          state.data.comments = {
+            items: action.payload.comments,
+            total: action.payload.total,
+          };
         }
       });
   },

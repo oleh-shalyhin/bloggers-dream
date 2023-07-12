@@ -5,13 +5,13 @@ import { commentsPageSize } from '../../constants/constants';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useParams } from 'react-router-dom';
-import { fetchPostComments, selectPostComments } from '../../store/commentsSlice';
+import { fetchPostComments, selectDetailedPost } from '../../store/detailedPostSlice';
 
 export function CommentList() {
   const [page, setPage] = useState(1);
 
   const { postId } = useParams();
-  const comments = useAppSelector(selectPostComments);
+  const post = useAppSelector(selectDetailedPost);
   const dispatch = useAppDispatch();
 
   const handlePageChange = async (event: React.ChangeEvent<unknown>, value: number) => {
@@ -32,9 +32,9 @@ export function CommentList() {
       <Typography variant="h5" component="h3">
         Comments
       </Typography>
-      {comments ? (
+      {post.data ? (
         <Stack>
-          {comments.items.map((comment) => (
+          {post.data.comments.items.map((comment) => (
             <Box key={comment.id}>
               <CommentListItem comment={comment} />
               <Divider />
@@ -42,7 +42,7 @@ export function CommentList() {
           ))}
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Pagination
-              count={getPagesAmount(comments.total, commentsPageSize)}
+              count={getPagesAmount(post.data.comments.total, commentsPageSize)}
               page={page}
               onChange={handlePageChange}
             />
