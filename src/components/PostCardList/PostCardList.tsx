@@ -1,16 +1,25 @@
-import { Alert, CircularProgress, Grid, Stack } from '@mui/material';
-import { PostCard } from '../';
-import { useEffect } from 'react';
+import { Alert, CircularProgress, Grid, Pagination, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { postsPageSize } from '../../constants/constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchPosts, selectPosts } from '../../store/postsSlice';
+import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
+import { PostCard } from '../';
 
 export function PostCardList() {
+  const [page, setPage] = useState(1);
+
   const posts = useAppSelector(selectPosts);
   const dispatch = useAppDispatch();
 
+  const handlePageChange = async (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
   useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
+    const skip = getSkipItemsAmount(page, postsPageSize);
+    dispatch(fetchPosts({ limit: postsPageSize, skip }));
+  }, [page, dispatch]);
 
   return (
     <Stack alignItems="center" sx={{ width: '100%' }}>
@@ -27,6 +36,9 @@ export function PostCardList() {
               <PostCard post={post} />
             </Grid>
           ))}
+          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Pagination count={getPagesAmount(posts.total, postsPageSize)} page={page} onChange={handlePageChange} />
+          </Grid>
         </Grid>
       )}
     </Stack>

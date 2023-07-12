@@ -1,3 +1,22 @@
+export interface PagedResponse {
+  total: number;
+  limit: number;
+  skip: number;
+}
+
+export interface GetPostsResponse extends PagedResponse {
+  posts: Post[];
+}
+
+export interface GetPostCommentsResponse extends PagedResponse {
+  comments: Comment[];
+}
+
+export interface PageSelector {
+  limit: number;
+  skip: number;
+}
+
 export interface Post {
   id: number;
   title: string;

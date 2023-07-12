@@ -1,23 +1,25 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Post, RequestStatus } from '../types/types';
 import { RootState } from './store';
+import { GetPostsResponse, PageSelector, Post, RequestStatus } from '../types/types';
 
 interface PostsState {
   items: Post[];
+  total: number;
   status: RequestStatus;
   error: string | null;
 }
 
 const initialState: PostsState = {
   items: [],
+  total: 0,
   status: 'idle',
   error: null,
 };
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-  const response = await fetch('https://dummyjson.com/posts');
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async ({ limit, skip }: PageSelector) => {
+  const response = await fetch(`https://dummyjson.com/posts?limit=${limit}&skip=${skip}`);
   const data = await response.json();
-  return data.posts;
+  return data;
 });
 
 export const postsSlice = createSlice({
@@ -29,9 +31,10 @@ export const postsSlice = createSlice({
       .addCase(fetchPosts.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<Post[]>) => {
+      .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<GetPostsResponse>) => {
         state.status = 'succeeded';
-        state.items = action.payload;
+        state.items = action.payload.posts;
+        state.total = action.payload.total;
       })
       .addCase(fetchPosts.rejected, (state) => {
         state.status = 'failed';
