@@ -1,6 +1,7 @@
 import { PayloadAction, createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import { GetPostsResponse, GetPostsRequestPayload, RequestStatus, Post } from '../types/types';
+import { postsLoadingFailedMessage, singlePostLoadingFailedMessage } from '../constants/constants';
 
 interface PostsState {
   total: number;
@@ -48,6 +49,7 @@ export const postsSlice = createSlice({
     builder
       .addCase(fetchPosts.pending, (state) => {
         state.postsRequestStatus.status = 'loading';
+        state.postsRequestStatus.error = null;
       })
       .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<GetPostsResponse>) => {
         state.postsRequestStatus.status = 'succeeded';
@@ -56,10 +58,11 @@ export const postsSlice = createSlice({
       })
       .addCase(fetchPosts.rejected, (state) => {
         state.postsRequestStatus.status = 'failed';
-        state.postsRequestStatus.error = 'Failed to load posts';
+        state.postsRequestStatus.error = postsLoadingFailedMessage;
       })
       .addCase(fetchSinglePost.pending, (state) => {
         state.singlePostRequestStatus.status = 'loading';
+        state.singlePostRequestStatus.error = null;
       })
       .addCase(fetchSinglePost.fulfilled, (state, action: PayloadAction<Post>) => {
         state.singlePostRequestStatus.status = 'succeeded';
@@ -67,7 +70,7 @@ export const postsSlice = createSlice({
       })
       .addCase(fetchSinglePost.rejected, (state) => {
         state.singlePostRequestStatus.status = 'failed';
-        state.singlePostRequestStatus.error = 'Failed to load post';
+        state.singlePostRequestStatus.error = singlePostLoadingFailedMessage;
       });
   },
 });

@@ -25,30 +25,44 @@ export function PostCardList() {
     dispatch(fetchPosts({ limit: postsPageSize, skip }));
   }, [page, dispatch]);
 
+  const renderLoader = () => <CircularProgress />;
+
+  const renderPostCardItems = () => (
+    <Grid container spacing={2}>
+      {postIds.map((postId) => (
+        <Grid key={postId} item xs={12} md={6}>
+          <PostCard postId={postId} />
+        </Grid>
+      ))}
+      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Pagination count={getPagesAmount(totalPostsAmount, postsPageSize)} page={page} onChange={handlePageChange} />
+      </Grid>
+    </Grid>
+  );
+
+  const renderErrorMessage = () => (
+    <Alert severity="error" sx={{ width: '100%' }}>
+      {postsRequestError}
+    </Alert>
+  );
+
+  const renderContent = () => {
+    let content = null;
+
+    if (postsRequestStatus === 'loading') {
+      content = renderLoader();
+    } else if (postsRequestStatus === 'succeeded') {
+      content = renderPostCardItems();
+    } else if (postsRequestStatus === 'failed' && postsRequestError != null) {
+      content = renderErrorMessage();
+    }
+
+    return content;
+  };
+
   return (
     <Stack alignItems="center" sx={{ width: '100%' }}>
-      {postsRequestStatus === 'loading' ? (
-        <CircularProgress />
-      ) : postsRequestError != null ? (
-        <Alert severity="error" sx={{ width: '100%' }}>
-          {postsRequestError}
-        </Alert>
-      ) : (
-        <Grid container spacing={2}>
-          {postIds.map((postId) => (
-            <Grid key={postId} item xs={12} md={6}>
-              <PostCard postId={postId} />
-            </Grid>
-          ))}
-          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Pagination
-              count={getPagesAmount(totalPostsAmount, postsPageSize)}
-              page={page}
-              onChange={handlePageChange}
-            />
-          </Grid>
-        </Grid>
-      )}
+      {renderContent()}
     </Stack>
   );
 }

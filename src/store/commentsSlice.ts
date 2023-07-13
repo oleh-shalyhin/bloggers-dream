@@ -1,15 +1,21 @@
 import { PayloadAction, createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { Comment, GetPostCommentsRequestPayload, GetPostCommentsResponse } from '../types/types';
+import { Comment, GetPostCommentsRequestPayload, GetPostCommentsResponse, RequestStatus } from '../types/types';
+import { postCommentsLoadingFailedMessage } from '../constants/constants';
 
 interface CommentsState {
   total: number;
+  commentsRequestStatus: RequestStatus;
 }
 
 const commentsAdapter = createEntityAdapter<Comment>();
 
 const initialState = commentsAdapter.getInitialState<CommentsState>({
   total: 0,
+  commentsRequestStatus: {
+    status: 'idle',
+    error: null,
+  },
 });
 
 export const fetchPostComments = createAsyncThunk<GetPostCommentsResponse, GetPostCommentsRequestPayload>(
@@ -25,10 +31,20 @@ export const commentsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(fetchPostComments.fulfilled, (state, action: PayloadAction<GetPostCommentsResponse>) => {
-      state.total = action.payload.total;
-      commentsAdapter.setAll(state, action.payload.comments);
-    });
+    builder
+      .addCase(fetchPostComments.pending, (state) => {
+        state.commentsRequestStatus.status = 'loading';
+        state.commentsRequestStatus.error = null;
+      })
+      .addCase(fetchPostComments.fulfilled, (state, action: PayloadAction<GetPostCommentsResponse>) => {
+        state.commentsRequestStatus.status = 'succeeded';
+        state.total = action.payload.total;
+        commentsAdapter.setAll(state, action.payload.comments);
+      })
+      .addCase(fetchPostComments.rejected, (state) => {
+        state.commentsRequestStatus.status = 'failed';
+        state.commentsRequestStatus.error = postCommentsLoadingFailedMessage;
+      });
   },
 });
 

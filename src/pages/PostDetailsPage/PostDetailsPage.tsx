@@ -27,26 +27,36 @@ export function PostDetailsPage() {
     };
   }, [dispatch, getPost]);
 
-  let content;
+  const renderLoader = () => <CircularProgress />;
 
-  if (!postId) {
-    content = null;
-  } else if (postRequestStatus === 'loading') {
-    content = <CircularProgress />;
-  } else if (postRequestStatus === 'succeeded' && post) {
-    content = (
-      <Stack spacing={4}>
-        <PostDetails post={post} />
-        <CommentList postId={+postId} />
-      </Stack>
-    );
-  } else if (postRequestStatus === 'failed' && postRequestError) {
-    return (
-      <Alert severity="error" sx={{ width: '100%' }}>
-        {postRequestError}
-      </Alert>
-    );
-  }
+  const renderPostDetails = () => (
+    <Stack spacing={4}>
+      <PostDetails post={post} />
+      <CommentList postId={+postId} />
+    </Stack>
+  );
 
-  return <Stack sx={{ alignItems: 'center' }}>{content}</Stack>;
+  const renderErrorMessage = () => (
+    <Alert severity="error" sx={{ width: '100%' }}>
+      {postRequestError}
+    </Alert>
+  );
+
+  const renderContent = () => {
+    let content = null;
+
+    if (!postId) {
+      content = null;
+    } else if (postRequestStatus === 'loading') {
+      content = renderLoader();
+    } else if (postRequestStatus === 'succeeded') {
+      content = renderPostDetails();
+    } else if (postRequestStatus === 'failed' && postRequestError !== null) {
+      content = renderErrorMessage();
+    }
+
+    return content;
+  };
+
+  return <Stack sx={{ alignItems: 'center' }}>{renderContent()}</Stack>;
 }
