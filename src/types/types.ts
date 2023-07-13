@@ -32,16 +32,6 @@ export interface Post {
   reactions: number;
 }
 
-export interface DetailedPost extends Post {
-  userName: string;
-  comments: PagedComments;
-}
-
-export interface PagedComments {
-  items: Comment[];
-  total: number;
-}
-
 export interface User {
   id: number;
   firstName: string;
@@ -56,4 +46,7 @@ export interface Comment {
   user: Pick<User, 'id' | 'username'>;
 }
 
-export type RequestStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
+export interface RequestStatus {
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
+}

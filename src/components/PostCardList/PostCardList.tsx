@@ -10,8 +10,9 @@ export function PostCardList() {
   const [page, setPage] = useState(1);
 
   const postIds = useAppSelector(selectPostIds);
-  const requestStatus = useAppSelector((store) => store.posts.status);
-  const requestError = useAppSelector((store) => store.posts.error);
+  const { status: postsRequestStatus, error: postsRequestError } = useAppSelector(
+    (store) => store.posts.postsRequestStatus,
+  );
   const totalPostsAmount = useAppSelector((store) => store.posts.total);
   const dispatch = useAppDispatch();
 
@@ -26,11 +27,11 @@ export function PostCardList() {
 
   return (
     <Stack alignItems="center" sx={{ width: '100%' }}>
-      {requestStatus === 'loading' ? (
+      {postsRequestStatus === 'loading' ? (
         <CircularProgress />
-      ) : requestError != null ? (
+      ) : postsRequestError != null ? (
         <Alert severity="error" sx={{ width: '100%' }}>
-          {requestError}
+          {postsRequestError}
         </Alert>
       ) : (
         <Grid container spacing={2}>

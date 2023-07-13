@@ -4,16 +4,22 @@ import { GetPostsResponse, GetPostsRequestPayload, RequestStatus, Post } from '.
 
 interface PostsState {
   total: number;
-  status: RequestStatus;
-  error: string | null;
+  postsRequestStatus: RequestStatus;
+  singlePostRequestStatus: RequestStatus;
 }
 
 const postsAdapter = createEntityAdapter<Post>();
 
 const initialState = postsAdapter.getInitialState<PostsState>({
   total: 0,
-  status: 'idle',
-  error: null,
+  postsRequestStatus: {
+    status: 'idle',
+    error: null,
+  },
+  singlePostRequestStatus: {
+    status: 'idle',
+    error: null,
+  },
 });
 
 export const fetchPosts = createAsyncThunk<GetPostsResponse, GetPostsRequestPayload>(
@@ -32,22 +38,37 @@ export const fetchSinglePost = createAsyncThunk<Post, number>('posts/fetchSingle
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    postDetailsClosed(state) {
+      state.singlePostRequestStatus.status = 'idle';
+      state.singlePostRequestStatus.error = null;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchPosts.pending, (state) => {
-        state.status = 'loading';
+        state.postsRequestStatus.status = 'loading';
       })
       .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<GetPostsResponse>) => {
-        state.status = 'succeeded';
+        state.postsRequestStatus.status = 'succeeded';
         state.total = action.payload.total;
         postsAdapter.setAll(state, action.payload.posts);
       })
       .addCase(fetchPosts.rejected, (state) => {
-        state.status = 'failed';
-        state.error = 'Failed to load posts';
+        state.postsRequestStatus.status = 'failed';
+        state.postsRequestStatus.error = 'Failed to load posts';
       })
-      .addCase(fetchSinglePost.fulfilled, postsAdapter.setOne);
+      .addCase(fetchSinglePost.pending, (state) => {
+        state.singlePostRequestStatus.status = 'loading';
+      })
+      .addCase(fetchSinglePost.fulfilled, (state, action: PayloadAction<Post>) => {
+        state.singlePostRequestStatus.status = 'succeeded';
+        postsAdapter.setOne(state, action.payload);
+      })
+      .addCase(fetchSinglePost.rejected, (state) => {
+        state.singlePostRequestStatus.status = 'failed';
+        state.singlePostRequestStatus.error = 'Failed to load post';
+      });
   },
 });
 
@@ -56,6 +77,8 @@ export const {
   selectById: selectPostById,
   selectIds: selectPostIds,
 } = postsAdapter.getSelectors((state: RootState) => state.posts);
+
+export const { postDetailsClosed } = postsSlice.actions;
 
 const postsReducer = postsSlice.reducer;
 export default postsReducer;
