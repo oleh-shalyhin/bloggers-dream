@@ -2,6 +2,8 @@ export const postCardTruncateWordsAmount = 10;
 export const postsPageSize = 10;
 export const commentsPageSize = 5;
 
-export const postsLoadingFailedMessage = 'Failed to load posts';
-export const singlePostLoadingFailedMessage = 'Failed to load post';
-export const postCommentsLoadingFailedMessage = 'Failed to load post comments';
+export const postsLoadingFailedMessage = 'Unfortunately, posts failed to load. To fix this, please refresh the page.';
+export const singlePostLoadingFailedMessage =
+  'Unfortunately, post failed to load. To fix this, please refresh the page.';
+export const postCommentsLoadingFailedMessage =
+  'Unfortunately, post comments failed to load. To fix this, please refresh the page.';
