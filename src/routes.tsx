@@ -1,5 +1,5 @@
 import App from './App';
-import { PostDetailsPage, PostsPage } from './pages';
+import { ErrorPage, PostDetailsPage, PostsPage } from './pages';
 
 const routes = [
   {
@@ -13,6 +13,10 @@ const routes = [
       {
         path: '/posts/:postId',
         element: <PostDetailsPage />,
+      },
+      {
+        path: '*',
+        element: <ErrorPage />,
       },
     ],
   },
