@@ -48,5 +48,5 @@ export interface Comment {
 
 export interface RequestStatus {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
+  error: boolean;
 }

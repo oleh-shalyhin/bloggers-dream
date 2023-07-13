@@ -1,7 +1,6 @@
 import { PayloadAction, createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import { Comment, GetPostCommentsRequestPayload, GetPostCommentsResponse, RequestStatus } from '../types/types';
-import { postCommentsLoadingFailedMessage } from '../constants/constants';
 
 interface CommentsState {
   total: number;
@@ -14,7 +13,7 @@ const initialState = commentsAdapter.getInitialState<CommentsState>({
   total: 0,
   commentsRequestStatus: {
     status: 'idle',
-    error: null,
+    error: false,
   },
 });
 
@@ -34,7 +33,7 @@ export const commentsSlice = createSlice({
     builder
       .addCase(fetchPostComments.pending, (state) => {
         state.commentsRequestStatus.status = 'loading';
-        state.commentsRequestStatus.error = null;
+        state.commentsRequestStatus.error = false;
       })
       .addCase(fetchPostComments.fulfilled, (state, action: PayloadAction<GetPostCommentsResponse>) => {
         state.commentsRequestStatus.status = 'succeeded';
@@ -43,7 +42,7 @@ export const commentsSlice = createSlice({
       })
       .addCase(fetchPostComments.rejected, (state) => {
         state.commentsRequestStatus.status = 'failed';
-        state.commentsRequestStatus.error = postCommentsLoadingFailedMessage;
+        state.commentsRequestStatus.error = true;
       });
   },
 });

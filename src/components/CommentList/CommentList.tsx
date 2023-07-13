@@ -1,10 +1,10 @@
-import { Alert, Box, CircularProgress, Divider, Pagination, Stack, Typography } from '@mui/material';
+import { Box, Divider, Pagination, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { commentsPageSize } from '../../constants/constants';
+import { commentsPageSize, postCommentsLoadingFailedMessage } from '../../constants/constants';
 import { fetchPostComments, selectCommentIds } from '../../store/commentsSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
-import { CommentListItem } from '../';
+import { CommentListItem, ErrorMessage, Loader } from '../';
 
 interface CommentsListProps {
   postId: number;
@@ -29,12 +29,6 @@ export function CommentList({ postId }: CommentsListProps) {
     dispatch(fetchPostComments({ postId, limit: commentsPageSize, skip }));
   }, [postId, page, dispatch]);
 
-  const renderLoader = () => (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <CircularProgress />
-    </Box>
-  );
-
   const renderPostComments = () => (
     <Stack>
       {commentIds.map((commentId) => (
@@ -53,21 +47,15 @@ export function CommentList({ postId }: CommentsListProps) {
     </Stack>
   );
 
-  const renderErrorMessage = () => (
-    <Alert severity="error" sx={{ width: '100%' }}>
-      {commentsRequestError}
-    </Alert>
-  );
-
   const renderContent = () => {
     let content = null;
 
     if (commentsRequestStatus === 'loading') {
-      content = renderLoader();
+      content = <Loader />;
     } else if (commentsRequestStatus === 'succeeded') {
       content = renderPostComments();
-    } else if (commentsRequestStatus === 'failed' && commentsRequestError != null) {
-      content = renderErrorMessage();
+    } else if (commentsRequestStatus === 'failed' && commentsRequestError) {
+      content = <ErrorMessage message={postCommentsLoadingFailedMessage} />;
     }
 
     return content;

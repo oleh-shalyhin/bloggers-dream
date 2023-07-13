@@ -1,10 +1,10 @@
-import { Alert, CircularProgress, Grid, Pagination, Stack } from '@mui/material';
+import { Grid, Pagination, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { postsPageSize } from '../../constants/constants';
+import { postsLoadingFailedMessage, postsPageSize } from '../../constants/constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchPosts, selectPostIds } from '../../store/postsSlice';
 import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
-import { PostCard } from '../';
+import { ErrorMessage, Loader, PostCard } from '../';
 
 export function PostCardList() {
   const [page, setPage] = useState(1);
@@ -25,8 +25,6 @@ export function PostCardList() {
     dispatch(fetchPosts({ limit: postsPageSize, skip }));
   }, [page, dispatch]);
 
-  const renderLoader = () => <CircularProgress />;
-
   const renderPostCardItems = () => (
     <Grid container spacing={2}>
       {postIds.map((postId) => (
@@ -40,21 +38,15 @@ export function PostCardList() {
     </Grid>
   );
 
-  const renderErrorMessage = () => (
-    <Alert severity="error" sx={{ width: '100%' }}>
-      {postsRequestError}
-    </Alert>
-  );
-
   const renderContent = () => {
     let content = null;
 
     if (postsRequestStatus === 'loading') {
-      content = renderLoader();
+      content = <Loader />;
     } else if (postsRequestStatus === 'succeeded') {
       content = renderPostCardItems();
-    } else if (postsRequestStatus === 'failed' && postsRequestError != null) {
-      content = renderErrorMessage();
+    } else if (postsRequestStatus === 'failed' && postsRequestError) {
+      content = <ErrorMessage message={postsLoadingFailedMessage} />;
     }
 
     return content;

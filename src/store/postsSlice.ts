@@ -1,7 +1,6 @@
 import { PayloadAction, createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import { GetPostsResponse, GetPostsRequestPayload, RequestStatus, Post } from '../types/types';
-import { postsLoadingFailedMessage, singlePostLoadingFailedMessage } from '../constants/constants';
 
 interface PostsState {
   total: number;
@@ -15,11 +14,11 @@ const initialState = postsAdapter.getInitialState<PostsState>({
   total: 0,
   postsRequestStatus: {
     status: 'idle',
-    error: null,
+    error: false,
   },
   singlePostRequestStatus: {
     status: 'idle',
-    error: null,
+    error: false,
   },
 });
 
@@ -42,14 +41,14 @@ export const postsSlice = createSlice({
   reducers: {
     postDetailsClosed(state) {
       state.singlePostRequestStatus.status = 'idle';
-      state.singlePostRequestStatus.error = null;
+      state.singlePostRequestStatus.error = false;
     },
   },
   extraReducers(builder) {
     builder
       .addCase(fetchPosts.pending, (state) => {
         state.postsRequestStatus.status = 'loading';
-        state.postsRequestStatus.error = null;
+        state.postsRequestStatus.error = false;
       })
       .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<GetPostsResponse>) => {
         state.postsRequestStatus.status = 'succeeded';
@@ -58,11 +57,11 @@ export const postsSlice = createSlice({
       })
       .addCase(fetchPosts.rejected, (state) => {
         state.postsRequestStatus.status = 'failed';
-        state.postsRequestStatus.error = postsLoadingFailedMessage;
+        state.postsRequestStatus.error = true;
       })
       .addCase(fetchSinglePost.pending, (state) => {
         state.singlePostRequestStatus.status = 'loading';
-        state.singlePostRequestStatus.error = null;
+        state.singlePostRequestStatus.error = false;
       })
       .addCase(fetchSinglePost.fulfilled, (state, action: PayloadAction<Post>) => {
         state.singlePostRequestStatus.status = 'succeeded';
@@ -70,7 +69,7 @@ export const postsSlice = createSlice({
       })
       .addCase(fetchSinglePost.rejected, (state) => {
         state.singlePostRequestStatus.status = 'failed';
-        state.singlePostRequestStatus.error = singlePostLoadingFailedMessage;
+        state.singlePostRequestStatus.error = true;
       });
   },
 });

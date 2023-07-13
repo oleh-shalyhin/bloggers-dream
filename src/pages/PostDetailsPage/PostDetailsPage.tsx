@@ -1,9 +1,10 @@
-import { Alert, CircularProgress, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { CommentList, PostDetails } from '../../components';
+import { CommentList, ErrorMessage, Loader, PostDetails } from '../../components';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchSinglePost, postDetailsClosed, selectPostById } from '../../store/postsSlice';
+import { singlePostLoadingFailedMessage } from '../../constants/constants';
 
 export function PostDetailsPage() {
   const { postId } = useParams();
@@ -27,20 +28,18 @@ export function PostDetailsPage() {
     };
   }, [dispatch, getPost]);
 
-  const renderLoader = () => <CircularProgress />;
+  const renderPostDetails = () => {
+    if (!postId || !post) {
+      return null;
+    }
 
-  const renderPostDetails = () => (
-    <Stack spacing={4}>
-      <PostDetails post={post} />
-      <CommentList postId={+postId} />
-    </Stack>
-  );
-
-  const renderErrorMessage = () => (
-    <Alert severity="error" sx={{ width: '100%' }}>
-      {postRequestError}
-    </Alert>
-  );
+    return (
+      <Stack spacing={4}>
+        <PostDetails post={post} />
+        <CommentList postId={+postId} />
+      </Stack>
+    );
+  };
 
   const renderContent = () => {
     let content = null;
@@ -48,11 +47,11 @@ export function PostDetailsPage() {
     if (!postId) {
       content = null;
     } else if (postRequestStatus === 'loading') {
-      content = renderLoader();
+      content = <Loader />;
     } else if (postRequestStatus === 'succeeded') {
       content = renderPostDetails();
-    } else if (postRequestStatus === 'failed' && postRequestError !== null) {
-      content = renderErrorMessage();
+    } else if (postRequestStatus === 'failed' && postRequestError) {
+      content = <ErrorMessage message={singlePostLoadingFailedMessage} />;
     }
 
     return content;
