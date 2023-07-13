@@ -1,4 +1,4 @@
-import { Box, Divider, Pagination, Stack, Typography } from '@mui/material';
+import { Box, Divider, Pagination, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { commentsPageSize, postCommentsLoadingFailedMessage } from '../../constants/constants';
 import { fetchPostComments, selectCommentIds } from '../../store/commentsSlice';
@@ -11,6 +11,12 @@ interface CommentsListProps {
 }
 
 export function CommentList({ postId }: CommentsListProps) {
+  const theme = useTheme();
+  const tablet = useMediaQuery(theme.breakpoints.down('md'));
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const paginationSize = mobile ? 'small' : 'medium';
+  const titleVariant = tablet ? 'h6' : 'h5';
+
   const [page, setPage] = useState(1);
 
   const commentIds = useAppSelector(selectCommentIds);
@@ -41,6 +47,7 @@ export function CommentList({ postId }: CommentsListProps) {
       </Stack>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Pagination
+          size={paginationSize}
           count={getPagesAmount(commentsTotalAmount, commentsPageSize)}
           page={page}
           onChange={handlePageChange}
@@ -65,7 +72,7 @@ export function CommentList({ postId }: CommentsListProps) {
 
   return (
     <Stack>
-      <Typography variant="h5" component="h3" sx={{ mb: 1 }}>
+      <Typography variant={titleVariant} component="h3" sx={{ mb: 1 }}>
         Comments
       </Typography>
       {renderContent()}

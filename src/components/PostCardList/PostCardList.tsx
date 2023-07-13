@@ -1,4 +1,4 @@
-import { Grid, Pagination, Stack } from '@mui/material';
+import { Grid, Pagination, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { postsLoadingFailedMessage, postsPageSize } from '../../constants/constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -7,6 +7,10 @@ import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
 import { ErrorMessage, Loader, PostCard } from '../';
 
 export function PostCardList() {
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const paginationSize = mobile ? 'small' : 'medium';
+
   const [page, setPage] = useState(1);
 
   const postIds = useAppSelector(selectPostIds);
@@ -26,14 +30,19 @@ export function PostCardList() {
   }, [page, dispatch]);
 
   const renderPostCardItems = () => (
-    <Grid container spacing={6}>
+    <Grid container spacing={{ xs: 2, sm: 4, md: 6 }}>
       {postIds.map((postId) => (
         <Grid key={postId} item xs={12} md={6}>
           <PostCard postId={postId} />
         </Grid>
       ))}
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Pagination count={getPagesAmount(totalPostsAmount, postsPageSize)} page={page} onChange={handlePageChange} />
+        <Pagination
+          size={paginationSize}
+          count={getPagesAmount(totalPostsAmount, postsPageSize)}
+          page={page}
+          onChange={handlePageChange}
+        />
       </Grid>
     </Grid>
   );

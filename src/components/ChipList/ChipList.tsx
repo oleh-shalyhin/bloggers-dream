@@ -1,4 +1,4 @@
-import { Box, Chip, useTheme } from '@mui/material';
+import { Box, Chip } from '@mui/material';
 import { postCardTag } from '../../constants/testIds';
 
 interface ChipListProps {
@@ -6,10 +6,8 @@ interface ChipListProps {
 }
 
 export function ChipList({ tags }: ChipListProps) {
-  const theme = useTheme();
-
   return (
-    <Box sx={{ display: 'flex', gap: theme.spacing() }}>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
       {tags.map((tag) => (
         <Chip key={tag} data-testid={postCardTag} label={tag} />
       ))}

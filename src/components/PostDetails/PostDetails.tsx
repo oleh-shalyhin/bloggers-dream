@@ -1,4 +1,4 @@
-import { Skeleton, Stack, Typography, useTheme } from '@mui/material';
+import { Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchPostAuthor, selectUserById } from '../../store/usersSlise';
@@ -11,6 +11,10 @@ interface PostDetailsProps {
 
 export function PostDetails({ post }: PostDetailsProps) {
   const theme = useTheme();
+  const tablet = useMediaQuery(theme.breakpoints.down('md'));
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const titleVariant = mobile ? 'h6' : tablet ? 'h5' : 'h4';
+
   const [isAuthorLoading, setIsAuthorLoading] = useState(false);
   const author = useAppSelector((state) => selectUserById(state, post.userId));
   const dispatch = useAppDispatch();
@@ -46,11 +50,11 @@ export function PostDetails({ post }: PostDetailsProps) {
 
   return (
     <Stack component="article">
-      <Typography variant="h4" component="h2">
+      <Typography variant={titleVariant} component="h2">
         {post.title}
       </Typography>
       <Typography variant="subtitle2">Author: {renderAuthorName()}</Typography>
-      <Typography variant="body1" sx={{ mt: theme.spacing(4) }}>
+      <Typography variant="body1" sx={{ mt: 4 }}>
         {post.body}
       </Typography>
     </Stack>
