@@ -20,7 +20,7 @@ export function PostCard({ postId }: PostCardProps) {
   return (
     <Card
       data-testid={postCard}
-      component="section"
+      component="article"
       elevation={4}
       sx={{ display: 'flex', flexDirection: 'column', height: '100%', p: 3, boxSizing: 'border-box' }}
     >
