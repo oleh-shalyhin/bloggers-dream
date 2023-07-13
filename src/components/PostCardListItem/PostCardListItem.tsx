@@ -6,13 +6,13 @@ import { postCard } from '../../constants/testIds';
 import { useAppSelector } from '../../store/hooks';
 import { selectPostById } from '../../store/postsSlice';
 import { truncateTextByWords } from '../../utils/utils';
-import { ChipList, ReactionsCounter } from '../';
+import { ChipList, ReactionsCounter } from '..';
 
-interface PostCardProps {
+interface PostCardListItemProps {
   postId: EntityId;
 }
 
-export function PostCard({ postId }: PostCardProps) {
+export function PostCardListItem({ postId }: PostCardListItemProps) {
   const post = useAppSelector((state) => selectPostById(state, postId));
 
   if (!post) return null;

@@ -3,7 +3,7 @@ export * from './CommentList/CommentList';
 export * from './CommentListItem/CommentListItem';
 export * from './ErrorMessage/ErrorMessage';
 export * from './Loader/Loader';
-export * from './PostCard/PostCard';
 export * from './PostCardList/PostCardList';
+export * from './PostCardListItem/PostCardListItem';
 export * from './PostDetails/PostDetails';
 export * from './ReactionsCounter/ReactionsCounter';

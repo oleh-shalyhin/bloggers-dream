@@ -5,7 +5,7 @@ import { postCardTruncateWordsAmount } from '../../constants/constants';
 import { postCardReactionsAmount, postCardTag } from '../../constants/testIds';
 import { postsResponseMock } from '../../mocks/mocks';
 import { truncateTextByWords } from '../../utils/utils';
-import { PostCard } from './PostCard';
+import { PostCardListItem } from './PostCardListItem';
 
 const post = postsResponseMock.posts[0];
 let postCardComponent: React.ReactElement;
@@ -14,14 +14,14 @@ beforeEach(() => {
   const routes = [
     {
       path: '/',
-      element: <PostCard postId={post.id} />,
+      element: <PostCardListItem postId={post.id} />,
     },
   ];
   const router = createMemoryRouter(routes, { initialEntries: ['/'] });
   postCardComponent = <RouterProvider router={router} />;
 });
 
-test('renders single post', async () => {
+test('renders single post card', async () => {
   const truncatedPostBody = `${truncateTextByWords(post.body, postCardTruncateWordsAmount)}...`;
   render(postCardComponent);
 

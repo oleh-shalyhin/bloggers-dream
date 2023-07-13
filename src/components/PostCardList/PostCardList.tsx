@@ -4,7 +4,7 @@ import { postsLoadingFailedMessage, postsPageSize } from '../../constants/consta
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchPosts, selectPostIds } from '../../store/postsSlice';
 import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
-import { ErrorMessage, Loader, PostCard } from '../';
+import { ErrorMessage, Loader, PostCardListItem } from '../';
 
 export function PostCardList() {
   const theme = useTheme();
@@ -33,7 +33,7 @@ export function PostCardList() {
     <Grid container spacing={{ xs: 2, sm: 4, md: 6 }}>
       {postIds.map((postId) => (
         <Grid key={postId} item xs={12} md={6}>
-          <PostCard postId={postId} />
+          <PostCardListItem postId={postId} />
         </Grid>
       ))}
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
