@@ -45,7 +45,7 @@ export function PostDetails({ post }: PostDetailsProps) {
   };
 
   return (
-    <Stack>
+    <Stack component="article">
       <Typography variant="h4" component="h2">
         {post.title}
       </Typography>

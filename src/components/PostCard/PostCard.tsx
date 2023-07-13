@@ -18,7 +18,12 @@ export function PostCard({ postId }: PostCardProps) {
   if (!post) return null;
 
   return (
-    <Card data-testid={postCard} elevation={4} sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Card
+      data-testid={postCard}
+      component="section"
+      elevation={4}
+      sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+    >
       <CardHeader
         title={
           <Typography variant="h5" component="h2">
