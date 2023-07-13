@@ -3,8 +3,8 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { EntityId } from '@reduxjs/toolkit';
 import { commentListItem } from '../../constants/testIds';
-import { selectCommentById } from '../../store/commentsSlice';
 import { useAppSelector } from '../../store/hooks';
+import { selectCommentById } from '../../store/slices';
 
 interface CommentListItemProps {
   commentId: EntityId;

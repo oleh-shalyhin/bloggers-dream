@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { RootState } from './store';
-import { GetPostsResponse, GetPostsRequestPayload, RequestStatus, Post } from '../types/types';
+import { RootState } from '../store';
+import { GetPostsResponse, GetPostsRequestPayload, RequestStatus, Post } from '../../types/types';
 
 interface PostsState {
   total: number;
@@ -82,5 +82,4 @@ export const {
 
 export const { postDetailsClosed } = postsSlice.actions;
 
-const postsReducer = postsSlice.reducer;
-export default postsReducer;
+export const postsReducer = postsSlice.reducer;

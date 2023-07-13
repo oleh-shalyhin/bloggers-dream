@@ -18,11 +18,9 @@ if (process.env.REACT_APP_ENV === 'development') {
 }
 
 root.render(
-  // <React.StrictMode>
   <Provider store={store}>
     <RouterProvider router={router} />
   </Provider>,
-  // </React.StrictMode>,
 );
 
 reportWebVitals();

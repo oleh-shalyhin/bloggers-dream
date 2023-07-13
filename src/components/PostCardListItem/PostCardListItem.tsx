@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { postCardTruncateWordsAmount } from '../../constants/constants';
 import { postCard } from '../../constants/testIds';
 import { useAppSelector } from '../../store/hooks';
-import { selectPostById } from '../../store/postsSlice';
+import { selectPostById } from '../../store/slices';
 import { truncateTextByWords } from '../../utils/utils';
 import { ChipList, ReactionsCounter } from '..';
 

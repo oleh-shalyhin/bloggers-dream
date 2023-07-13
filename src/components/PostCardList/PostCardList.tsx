@@ -2,7 +2,7 @@ import { Grid, Pagination, Stack, useMediaQuery, useTheme } from '@mui/material'
 import { useEffect, useState } from 'react';
 import { postsLoadingFailedMessage, postsPageSize } from '../../constants/constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchPosts, selectPostIds } from '../../store/postsSlice';
+import { fetchPosts, selectPostIds } from '../../store/slices';
 import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
 import { ErrorMessage, Loader, PostCardListItem } from '../';
 

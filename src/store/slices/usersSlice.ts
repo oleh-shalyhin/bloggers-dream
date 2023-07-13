@@ -1,6 +1,6 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { RootState } from './store';
-import { User } from '../types/types';
+import { RootState } from '../store';
+import { User } from '../../types/types';
 
 const usersAdapter = createEntityAdapter<User>();
 
@@ -22,5 +22,4 @@ export const { selectAll: selectAllUsers, selectById: selectUserById } = usersAd
   (state: RootState) => state.users,
 );
 
-const usersReducer = usersSlice.reducer;
-export default usersReducer;
+export const usersReducer = usersSlice.reducer;

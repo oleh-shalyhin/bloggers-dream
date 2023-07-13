@@ -1,7 +1,7 @@
 import { Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchPostAuthor, selectUserById } from '../../store/usersSlice';
+import { fetchPostAuthor, selectUserById } from '../../store/slices';
 import { Post } from '../../types/types';
 import { getFullName } from '../../utils/utils';
 

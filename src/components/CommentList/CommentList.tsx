@@ -1,8 +1,8 @@
 import { Box, Divider, Pagination, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { commentsPageSize, postCommentsLoadingFailedMessage } from '../../constants/constants';
-import { fetchPostComments, selectCommentIds } from '../../store/commentsSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { fetchPostComments, selectCommentIds } from '../../store/slices';
 import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
 import { CommentListItem, ErrorMessage, Loader } from '../';
 

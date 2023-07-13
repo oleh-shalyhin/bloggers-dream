@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { RootState } from './store';
-import { Comment, GetPostCommentsRequestPayload, GetPostCommentsResponse, RequestStatus } from '../types/types';
+import { RootState } from '../store';
+import { Comment, GetPostCommentsRequestPayload, GetPostCommentsResponse, RequestStatus } from '../../types/types';
 
 interface CommentsState {
   total: number;
@@ -53,5 +53,4 @@ export const {
   selectIds: selectCommentIds,
 } = commentsAdapter.getSelectors((state: RootState) => state.comments);
 
-const commentsReducer = commentsSlice.reducer;
-export default commentsReducer;
+export const commentsReducer = commentsSlice.reducer;

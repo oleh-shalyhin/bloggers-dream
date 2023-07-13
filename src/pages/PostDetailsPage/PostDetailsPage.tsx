@@ -2,9 +2,9 @@ import { Stack } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { CommentList, ErrorMessage, Loader, PostDetails } from '../../components';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchSinglePost, postDetailsClosed, selectPostById } from '../../store/postsSlice';
 import { singlePostLoadingFailedMessage } from '../../constants/constants';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { fetchSinglePost, postDetailsClosed, selectPostById } from '../../store/slices';
 
 export function PostDetailsPage() {
   const { postId } = useParams();
