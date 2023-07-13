@@ -1,29 +1,16 @@
-import { render, screen } from '@testing-library/react';
-import React from 'react';
-import { RouterProvider, createMemoryRouter } from 'react-router-dom';
+import { screen } from '@testing-library/react';
 import { postCardTruncateWordsAmount } from '../../constants/constants';
-import { postCardReactionsAmount, postCardTag } from '../../constants/testIds';
+import { postCard, postCardReactionsAmount, postCardTag } from '../../constants/testIds';
 import { postsResponseMock } from '../../mocks/mocks';
+import { renderWithProviders } from '../../utils/testUtils';
 import { truncateTextByWords } from '../../utils/utils';
 import { PostCardListItem } from './PostCardListItem';
 
 const post = postsResponseMock.posts[0];
-let postCardComponent: React.ReactElement;
 
-beforeEach(() => {
-  const routes = [
-    {
-      path: '/',
-      element: <PostCardListItem postId={post.id} />,
-    },
-  ];
-  const router = createMemoryRouter(routes, { initialEntries: ['/'] });
-  postCardComponent = <RouterProvider router={router} />;
-});
-
-test('renders single post card', async () => {
+test('renders single post card', () => {
   const truncatedPostBody = `${truncateTextByWords(post.body, postCardTruncateWordsAmount)}...`;
-  render(postCardComponent);
+  renderWithProviders(<PostCardListItem postId={post.id} />);
 
   expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(post.title);
   expect(screen.getByText(truncatedPostBody)).toBeInTheDocument();
@@ -35,4 +22,9 @@ test('renders single post card', async () => {
   tagElements.forEach((tagElement, j) => {
     expect(tagElement).toHaveTextContent(post.tags[j]);
   });
+});
+
+test('renders nothing when post is missing', () => {
+  renderWithProviders(<PostCardListItem postId={1000} />);
+  expect(screen.queryByTestId(postCard)).not.toBeInTheDocument();
 });

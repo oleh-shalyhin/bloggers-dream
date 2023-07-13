@@ -1,5 +1,5 @@
 import { rest } from 'msw';
-import { commentsResponseMock, postsResponseMock, usersResponseMock } from './mocks';
+import { commentsResponseMock, postsResponseMock, usersMock } from './mocks';
 
 export const handlers = [
   rest.get('https://dummyjson.com/posts', (req, res, ctx) => {
@@ -16,7 +16,7 @@ export const handlers = [
   }),
   rest.get('https://dummyjson.com/users/:userId', (req, res, ctx) => {
     const { userId } = req.params;
-    const user = usersResponseMock.users.find((user) => user.id === +userId);
+    const user = usersMock.find((user) => user.id === +userId);
     if (!user) {
       return res(ctx.status(404), ctx.json({ message: `Cannot find user with id ${userId}` }));
     }
