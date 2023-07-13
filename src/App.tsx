@@ -3,10 +3,10 @@ import { Link as RouterLink, Outlet } from 'react-router-dom';
 
 function App() {
   return (
-    <Container maxWidth="md">
-      <Stack alignItems="center" spacing={4}>
+    <Container maxWidth="md" sx={{ my: 5 }}>
+      <Stack alignItems="center" spacing={6}>
         <Box component="header">
-          <Typography variant="h2" component="h1">
+          <Typography variant="h2" component="h1" sx={{ fontWeight: 'bold' }}>
             <Link component={RouterLink} to={'/'} underline="none">
               Blogger's Dream
             </Link>

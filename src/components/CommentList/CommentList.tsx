@@ -30,13 +30,15 @@ export function CommentList({ postId }: CommentsListProps) {
   }, [postId, page, dispatch]);
 
   const renderPostComments = () => (
-    <Stack>
-      {commentIds.map((commentId) => (
-        <Box key={commentId}>
-          <CommentListItem commentId={commentId} />
-          <Divider />
-        </Box>
-      ))}
+    <Stack spacing={2}>
+      <Stack spacing={1}>
+        {commentIds.map((commentId) => (
+          <Stack key={commentId} spacing={1}>
+            <CommentListItem commentId={commentId} />
+            <Divider />
+          </Stack>
+        ))}
+      </Stack>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Pagination
           count={getPagesAmount(commentsTotalAmount, commentsPageSize)}
@@ -63,7 +65,7 @@ export function CommentList({ postId }: CommentsListProps) {
 
   return (
     <Stack>
-      <Typography variant="h5" component="h3">
+      <Typography variant="h5" component="h3" sx={{ mb: 1 }}>
         Comments
       </Typography>
       {renderContent()}

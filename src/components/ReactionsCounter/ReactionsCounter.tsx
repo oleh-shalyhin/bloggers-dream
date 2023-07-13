@@ -10,7 +10,7 @@ export function ReactionsCounter({ amount }: ReactionsCounterProps) {
   const theme = useTheme();
 
   return (
-    <Box sx={{ display: 'flex', gap: theme.spacing(2) }}>
+    <Box sx={{ display: 'flex', gap: theme.spacing() }}>
       <CommentOutlinedIcon />
       <Typography data-testid={postCardReactionsAmount} variant="body1">
         {amount}

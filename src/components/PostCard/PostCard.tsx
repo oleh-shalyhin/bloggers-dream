@@ -22,11 +22,11 @@ export function PostCard({ postId }: PostCardProps) {
       data-testid={postCard}
       component="section"
       elevation={4}
-      sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+      sx={{ display: 'flex', flexDirection: 'column', height: '100%', p: 3, boxSizing: 'border-box' }}
     >
       <CardHeader
         title={
-          <Typography variant="h5" component="h2">
+          <Typography variant="h6" component="h2" sx={{ lineHeight: 1, mb: 2 }}>
             {post.title}
           </Typography>
         }
@@ -35,9 +35,9 @@ export function PostCard({ postId }: PostCardProps) {
       <CardContent sx={{ flex: '1 1 auto' }}>
         <Typography variant="body2">{`${truncateTextByWords(post.body, postCardTruncateWordsAmount)}...`}</Typography>
       </CardContent>
-      <CardActions sx={{ justifyContent: 'space-between' }}>
+      <CardActions sx={{ justifyContent: 'space-between', px: 2 }}>
         <ReactionsCounter amount={post.reactions} />
-        <Button component={RouterLink} to={`/posts/${post.id}`} variant="contained">
+        <Button component={RouterLink} to={`/posts/${post.id}`} variant="contained" size="small">
           Read more
         </Button>
       </CardActions>

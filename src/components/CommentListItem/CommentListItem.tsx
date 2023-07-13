@@ -1,5 +1,6 @@
 import PersonIcon from '@mui/icons-material/Person';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { grey } from '@mui/material/colors';
 import { EntityId } from '@reduxjs/toolkit';
 import { commentListItem } from '../../constants/testIds';
 import { selectCommentById } from '../../store/commentsSlice';
@@ -20,12 +21,10 @@ export function CommentListItem({ commentId }: CommentListItemProps) {
   return (
     <Stack data-testid={commentListItem}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: theme.spacing() }}>
-        <PersonIcon />
-        <Typography variant="subtitle1" sx={{ fontStyle: 'italic' }}>
-          {comment.user.username}
-        </Typography>
+        <PersonIcon sx={{ color: grey[600] }} />
+        <Typography variant="subtitle2">{comment.user.username}</Typography>
       </Box>
-      <Typography variant="body2">{comment.body}</Typography>
+      <Typography variant="body1">{comment.body}</Typography>
     </Stack>
   );
 }

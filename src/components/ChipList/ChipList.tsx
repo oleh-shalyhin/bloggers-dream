@@ -9,7 +9,7 @@ export function ChipList({ tags }: ChipListProps) {
   const theme = useTheme();
 
   return (
-    <Box sx={{ display: 'flex', gap: theme.spacing(2) }}>
+    <Box sx={{ display: 'flex', gap: theme.spacing() }}>
       {tags.map((tag) => (
         <Chip key={tag} data-testid={postCardTag} label={tag} />
       ))}

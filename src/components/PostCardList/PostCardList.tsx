@@ -26,7 +26,7 @@ export function PostCardList() {
   }, [page, dispatch]);
 
   const renderPostCardItems = () => (
-    <Grid container spacing={2}>
+    <Grid container spacing={6}>
       {postIds.map((postId) => (
         <Grid key={postId} item xs={12} md={6}>
           <PostCard postId={postId} />

@@ -6,7 +6,7 @@ interface ErrorMessageProps {
 
 export function ErrorMessage({ message }: ErrorMessageProps) {
   return (
-    <Alert severity="error" sx={{ width: '100%' }}>
+    <Alert severity="error" sx={{ width: '100%', boxSizing: 'border-box' }}>
       {message}
     </Alert>
   );

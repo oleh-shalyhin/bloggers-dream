@@ -34,7 +34,7 @@ export function PostDetails({ post }: PostDetailsProps) {
     let content;
 
     if (isAuthorLoading) {
-      content = <Skeleton sx={{ width: 200, display: 'inline-block' }} />;
+      content = <Skeleton animation={false} sx={{ width: 200, display: 'inline-block' }} />;
     } else if (author) {
       content = getFullName(author.firstName, author.lastName);
     } else {
@@ -49,10 +49,8 @@ export function PostDetails({ post }: PostDetailsProps) {
       <Typography variant="h4" component="h2">
         {post.title}
       </Typography>
-      <Typography variant="subtitle1" sx={{ fontStyle: 'italic' }}>
-        Author: {renderAuthorName()}
-      </Typography>
-      <Typography variant="body2" sx={{ mt: theme.spacing(2) }}>
+      <Typography variant="subtitle2">Author: {renderAuthorName()}</Typography>
+      <Typography variant="body1" sx={{ mt: theme.spacing(4) }}>
         {post.body}
       </Typography>
     </Stack>
