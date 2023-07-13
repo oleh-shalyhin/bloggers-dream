@@ -57,5 +57,5 @@ export function PostDetailsPage() {
     return content;
   };
 
-  return <Stack sx={{ alignItems: 'center' }}>{renderContent()}</Stack>;
+  return <Stack sx={{ alignItems: 'center', width: '100%' }}>{renderContent()}</Stack>;
 }
