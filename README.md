@@ -12,7 +12,7 @@ Before running any npm scripts in the project, install project dependencies with
 
 There are two ways to start project locally:
 
-- `npm start` starts the project in development mode with all APIs mocked
+- `npm start` starts the project in development mode with all APIs and data mocked
 - `npm run start:prod` starts the project in production mode allowing calls to the real API
 
 ### Build
