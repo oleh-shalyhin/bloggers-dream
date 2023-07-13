@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { postCard } from '../../constants/testIds';
 import { postsResponseMock } from '../../mocks/mocks';
-import routes from '../../routes';
+import routes from '../../routes/routes';
 
 const router = createMemoryRouter(routes, { initialEntries: ['/'] });
 const appComponent = <RouterProvider router={router} />;

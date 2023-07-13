@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { commentsResponseMock, postsResponseMock } from '../../mocks/mocks';
-import routes from '../../routes';
+import routes from '../../routes/routes';
 import { commentListItem } from '../../constants/testIds';
 
 const post = postsResponseMock.posts[0];

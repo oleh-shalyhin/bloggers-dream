@@ -1,5 +1,5 @@
-import App from './App';
-import { ErrorPage, PostDetailsPage, PostsPage } from './pages';
+import App from '../App';
+import { ErrorPage, PostDetailsPage, PostsPage } from '../pages';
 
 const routes = [
   {
