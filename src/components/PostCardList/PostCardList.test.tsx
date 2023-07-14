@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { getPostsUrl } from '../../api/client';
 import { postsLoadingFailedMessage } from '../../constants/constants';
 import { postCard } from '../../constants/testIds';
 import { postsResponseMock } from '../../mocks/mocks';
@@ -10,7 +11,7 @@ import { PostCardList } from './PostCardList';
 const posts = postsResponseMock.posts;
 
 const server = setupServer(
-  rest.get('https://dummyjson.com/posts', (req, res, ctx) => {
+  rest.get(getPostsUrl, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(postsResponseMock));
   }),
 );
@@ -29,7 +30,7 @@ test('renders list of post cards', async () => {
 
 test('renders error message when request failed', async () => {
   server.use(
-    rest.get('https://dummyjson.com/posts', (req, res, ctx) => {
+    rest.get(getPostsUrl, (req, res, ctx) => {
       return res(ctx.status(500));
     }),
   );

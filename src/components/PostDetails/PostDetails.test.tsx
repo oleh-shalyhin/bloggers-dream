@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { getUserUrl } from '../../api/client';
 import { usersMock, postsResponseMock } from '../../mocks/mocks';
 import { renderWithProviders } from '../../utils/testUtils';
 import { getFullName } from '../../utils/utils';
@@ -11,7 +12,7 @@ const author = usersMock[0];
 const authorName = getFullName(author.firstName, author.lastName);
 
 const server = setupServer(
-  rest.get('https://dummyjson.com/users/:userId', (req, res, ctx) => {
+  rest.get(getUserUrl, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(author));
   }),
 );
@@ -30,7 +31,7 @@ test('renders post details', async () => {
 
 test('renders author name when request failed but author is in store', async () => {
   server.use(
-    rest.get('https://dummyjson.com/users/:userId', (req, res, ctx) => {
+    rest.get(getUserUrl, (req, res, ctx) => {
       return res(ctx.status(500));
     }),
   );
@@ -41,7 +42,7 @@ test('renders author name when request failed but author is in store', async () 
 
 test('renders post details with Unknown Author when request failed and author missing in store', async () => {
   server.use(
-    rest.get('https://dummyjson.com/users/:userId', (req, res, ctx) => {
+    rest.get(getUserUrl, (req, res, ctx) => {
       return res(ctx.status(500));
     }),
   );

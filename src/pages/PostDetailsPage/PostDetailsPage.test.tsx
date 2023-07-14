@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { getPostCommentsUrl, getSinglePostUrl, getUserUrl } from '../../api/client';
 import { singlePostLoadingFailedMessage } from '../../constants/constants';
 import { commentListItem } from '../../constants/testIds';
 import { commentsResponseMock, postsResponseMock, usersMock } from '../../mocks/mocks';
@@ -12,13 +13,13 @@ const author = usersMock[0];
 const comments = commentsResponseMock.comments;
 
 const server = setupServer(
-  rest.get('https://dummyjson.com/posts/:postId', (req, res, ctx) => {
+  rest.get(getSinglePostUrl, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(post));
   }),
-  rest.get('https://dummyjson.com/users/:userId', (req, res, ctx) => {
+  rest.get(getUserUrl, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(author));
   }),
-  rest.get('https://dummyjson.com/comments/post/:postId', (req, res, ctx) => {
+  rest.get(getPostCommentsUrl, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(commentsResponseMock));
   }),
 );
@@ -44,7 +45,7 @@ test('renders post details page', async () => {
 
 test('renders error message when request failed', async () => {
   server.use(
-    rest.get('https://dummyjson.com/posts/:postId', (req, res, ctx) => {
+    rest.get(getSinglePostUrl, (req, res, ctx) => {
       return res(ctx.status(500));
     }),
   );

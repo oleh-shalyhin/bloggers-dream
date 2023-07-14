@@ -1,4 +1,5 @@
 import { PayloadAction, createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { getPosts, getSinglePost } from '../../api/client';
 import { RootState } from '../store';
 import { GetPostsResponse, GetPostsRequestPayload, RequestStatus, Post } from '../../types/types';
 
@@ -22,18 +23,8 @@ const initialState = postsAdapter.getInitialState<PostsState>({
   },
 });
 
-export const fetchPosts = createAsyncThunk<GetPostsResponse, GetPostsRequestPayload>(
-  'posts/fetchPosts',
-  async ({ limit, skip }) => {
-    const response = await fetch(`https://dummyjson.com/posts?limit=${limit}&skip=${skip}`);
-    return await response.json();
-  },
-);
-
-export const fetchSinglePost = createAsyncThunk<Post, number>('posts/fetchSinglePost', async (postId) => {
-  const response = await fetch(`https://dummyjson.com/posts/${postId}`);
-  return await response.json();
-});
+export const fetchPosts = createAsyncThunk<GetPostsResponse, GetPostsRequestPayload>('posts/fetchPosts', getPosts);
+export const fetchSinglePost = createAsyncThunk<Post, number>('posts/fetchSinglePost', getSinglePost);
 
 export const postsSlice = createSlice({
   name: 'posts',

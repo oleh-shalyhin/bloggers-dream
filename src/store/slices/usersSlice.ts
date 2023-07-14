@@ -1,13 +1,11 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { getUser } from '../../api/client';
 import { RootState } from '../store';
 import { User } from '../../types/types';
 
 const usersAdapter = createEntityAdapter<User>();
 
-export const fetchPostAuthor = createAsyncThunk<User, number>('users/fetchPostAuthor', async (userId) => {
-  const response = await fetch(`https://dummyjson.com/users/${userId}`);
-  return await response.json();
-});
+export const fetchPostAuthor = createAsyncThunk<User, number>('users/fetchPostAuthor', getUser);
 
 export const usersSlice = createSlice({
   name: 'users',

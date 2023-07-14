@@ -1,4 +1,5 @@
 import { PayloadAction, createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { getPostComments } from '../../api/client';
 import { RootState } from '../store';
 import { Comment, GetPostCommentsRequestPayload, GetPostCommentsResponse, RequestStatus } from '../../types/types';
 
@@ -19,10 +20,7 @@ const initialState = commentsAdapter.getInitialState<CommentsState>({
 
 export const fetchPostComments = createAsyncThunk<GetPostCommentsResponse, GetPostCommentsRequestPayload>(
   'comments/fetchPostComments',
-  async ({ postId, limit, skip }) => {
-    const response = await fetch(`https://dummyjson.com/comments/post/${postId}?limit=${limit}&skip=${skip}`);
-    return await response.json();
-  },
+  getPostComments,
 );
 
 export const commentsSlice = createSlice({
