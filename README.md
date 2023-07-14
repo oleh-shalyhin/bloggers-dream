@@ -28,6 +28,7 @@ Run unit tests in watch mode with `npm test`.
 - Typescript - programming language
 - React - library for building user interfaces
 - Redux - state management library
+- Axios - API client library
 - msw - mocking APIs for local development and testing
 - Jest - test runner
 - React Testing Library - unit testing library
