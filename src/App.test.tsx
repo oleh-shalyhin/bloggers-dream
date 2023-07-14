@@ -25,7 +25,7 @@ test('navigates between PostsPage and PostDetailsPage', async () => {
   expect(await screen.findByText(post.body)).toBeInTheDocument();
   expect(screen.queryAllByTestId(postCard)).toHaveLength(0);
 
-  await userEvent.click(screen.getByText(/blogger's dream/i));
+  await userEvent.click(screen.getByText(/<< back to posts/i));
   expect(await screen.findAllByTestId(postCard)).toHaveLength(postsResponseMock.posts.length);
   expect(screen.queryByText(post.body)).not.toBeInTheDocument();
 });

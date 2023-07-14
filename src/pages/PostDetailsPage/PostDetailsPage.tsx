@@ -1,6 +1,6 @@
-import { Stack } from '@mui/material';
+import { Link, Stack } from '@mui/material';
 import { useCallback, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { CommentList, ErrorMessage, Loader, PostDetails } from '../../components';
 import { singlePostLoadingFailedMessage } from '../../constants/constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -35,6 +35,9 @@ export function PostDetailsPage() {
 
     return (
       <Stack spacing={4}>
+        <Link component={RouterLink} to={'/'}>
+          &lt;&lt; Back to posts
+        </Link>
         <PostDetails post={post} />
         <CommentList postId={+postId} />
       </Stack>
