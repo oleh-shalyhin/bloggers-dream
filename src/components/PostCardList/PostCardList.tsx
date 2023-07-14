@@ -1,5 +1,6 @@
-import { Grid, Pagination, Stack, useMediaQuery, useTheme } from '@mui/material';
+import { Grid, Pagination, PaginationItem, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { postsLoadingFailedMessage, postsPageSize } from '../../constants/constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchPosts, selectPostIds } from '../../store/slices';
@@ -11,7 +12,9 @@ export function PostCardList() {
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   const paginationSize = mobile ? 'small' : 'medium';
 
-  const [page, setPage] = useState(1);
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const [page, setPage] = useState(parseInt(query.get('page') || '1'));
 
   const postIds = useAppSelector(selectPostIds);
   const { status: postsRequestStatus, error: postsRequestError } = useAppSelector(
@@ -42,6 +45,9 @@ export function PostCardList() {
           count={getPagesAmount(totalPostsAmount, postsPageSize)}
           page={page}
           onChange={handlePageChange}
+          renderItem={(item) => (
+            <PaginationItem component={Link} to={`/posts${item.page === 1 ? '' : `?page=${item.page}`}`} {...item} />
+          )}
         />
       </Grid>
     </Grid>

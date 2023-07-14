@@ -1,12 +1,13 @@
-import { Link, Stack } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import { useCallback, useEffect } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CommentList, ErrorMessage, Loader, PostDetails } from '../../components';
 import { singlePostLoadingFailedMessage } from '../../constants/constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchSinglePost, postDetailsClosed, selectPostById } from '../../store/slices';
 
 export function PostDetailsPage() {
+  const navigate = useNavigate();
   const { postId } = useParams();
   const post = useAppSelector((state) => selectPostById(state, postId as string));
   const { status: postRequestStatus, error: postRequestError } = useAppSelector(
@@ -35,9 +36,9 @@ export function PostDetailsPage() {
 
     return (
       <Stack spacing={4}>
-        <Link component={RouterLink} to={'/'}>
-          &lt;&lt; Back to posts
-        </Link>
+        <Box>
+          <Button onClick={() => navigate(-1)}>&lt;&lt; Back to posts</Button>
+        </Box>
         <PostDetails post={post} />
         <CommentList postId={+postId} />
       </Stack>
