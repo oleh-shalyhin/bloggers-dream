@@ -1,5 +1,5 @@
 import { Box, Button, Stack } from '@mui/material';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CommentList, ErrorMessage, Loader, PostDetails } from '../../components';
 import { singlePostLoadingFailedMessage } from '../../constants/constants';
@@ -8,29 +8,24 @@ import { fetchSinglePost, postDetailsClosed, selectPostById } from '../../store/
 
 export function PostDetailsPage() {
   const navigate = useNavigate();
-  const { postId } = useParams();
-  const post = useAppSelector((state) => selectPostById(state, postId as string));
-  const { status: postRequestStatus, error: postRequestError } = useAppSelector(
-    (state) => state.posts.singlePostRequestStatus,
-  );
+  const { postId: postIdParam } = useParams();
+  const postId = postIdParam ? parseInt(postIdParam) : undefined;
+  const post = useAppSelector((state) => selectPostById(state, postId));
+  const singlePostRequestStatus = useAppSelector((state) => state.posts.singlePostRequestStatus);
   const dispatch = useAppDispatch();
 
-  const getPost = useCallback(async () => {
-    if (postId) {
-      dispatch(fetchSinglePost(+postId));
-    }
-  }, [postId, dispatch]);
-
   useEffect(() => {
-    getPost();
+    if (postId !== undefined) {
+      dispatch(fetchSinglePost(postId));
+    }
 
     return () => {
       dispatch(postDetailsClosed());
     };
-  }, [dispatch, getPost]);
+  }, [dispatch, postId]);
 
   const renderPostDetails = () => {
-    if (!postId || !post) {
+    if (postId === undefined || !post) {
       return null;
     }
 
@@ -40,21 +35,20 @@ export function PostDetailsPage() {
           <Button onClick={() => navigate(-1)}>&lt;&lt; Back to posts</Button>
         </Box>
         <PostDetails post={post} />
-        <CommentList postId={+postId} />
+        <CommentList postId={postId} />
       </Stack>
     );
   };
 
   const renderContent = () => {
     let content = null;
+    const { status, error } = singlePostRequestStatus;
 
-    if (!postId) {
-      content = null;
-    } else if (postRequestStatus === 'loading') {
+    if (status === 'loading') {
       content = <Loader />;
-    } else if (postRequestStatus === 'succeeded') {
+    } else if (status === 'succeeded') {
       content = renderPostDetails();
-    } else if (postRequestStatus === 'failed' && postRequestError) {
+    } else if (status === 'failed' && error) {
       content = <ErrorMessage message={singlePostLoadingFailedMessage} />;
     }
 

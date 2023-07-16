@@ -1,5 +1,5 @@
 import { Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchPostAuthor, selectUserById } from '../../store/slices';
 import { Post } from '../../types/types';
@@ -19,20 +19,20 @@ export function PostDetails({ post }: PostDetailsProps) {
   const author = useAppSelector((state) => selectUserById(state, post.userId));
   const dispatch = useAppDispatch();
 
-  const getAuthor = useCallback(async () => {
-    try {
-      setIsAuthorLoading(true);
-      await dispatch(fetchPostAuthor(post.userId)).unwrap();
-    } catch (error) {
-      console.error('Failed to load post author');
-    } finally {
-      setIsAuthorLoading(false);
-    }
-  }, [post, dispatch]);
-
   useEffect(() => {
+    const getAuthor = async () => {
+      try {
+        setIsAuthorLoading(true);
+        await dispatch(fetchPostAuthor(post.userId)).unwrap();
+      } catch (error) {
+        console.error('Failed to load post author');
+      } finally {
+        setIsAuthorLoading(false);
+      }
+    };
+
     getAuthor();
-  }, [getAuthor]);
+  }, [dispatch, post.userId]);
 
   const renderAuthorName = () => {
     let content;

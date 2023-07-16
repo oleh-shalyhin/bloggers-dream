@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { postCardTruncateWordsAmount } from '../../constants/constants';
-import { postCard, postCardReactionsAmount, postCardTag } from '../../constants/testIds';
+import { postCardReactionsAmount, postCardTag } from '../../constants/testIds';
 import { postsResponseMock } from '../../mocks/mocks';
 import { renderWithProviders } from '../../utils/testUtils';
 import { truncateTextByWords } from '../../utils/utils';
@@ -10,7 +10,7 @@ const post = postsResponseMock.posts[0];
 
 test('renders single post card', () => {
   const truncatedPostBody = `${truncateTextByWords(post.body, postCardTruncateWordsAmount)}...`;
-  renderWithProviders(<PostCardListItem postId={post.id} />);
+  renderWithProviders(<PostCardListItem post={post} />);
 
   expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(post.title);
   expect(screen.getByText(truncatedPostBody)).toBeInTheDocument();
@@ -22,9 +22,4 @@ test('renders single post card', () => {
   tagElements.forEach((tagElement, j) => {
     expect(tagElement).toHaveTextContent(post.tags[j]);
   });
-});
-
-test('renders nothing when post is missing', () => {
-  renderWithProviders(<PostCardListItem postId={1000} />);
-  expect(screen.queryByTestId(postCard)).not.toBeInTheDocument();
 });

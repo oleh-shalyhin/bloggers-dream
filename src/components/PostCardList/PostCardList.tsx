@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { postsLoadingFailedMessage, postsPageSize } from '../../constants/constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchPosts, selectPostIds } from '../../store/slices';
+import { fetchPosts, selectPosts } from '../../store/slices';
 import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
 import { ErrorMessage, Loader, PostCardListItem } from '../';
 
@@ -16,11 +16,7 @@ export function PostCardList() {
   const query = new URLSearchParams(location.search);
   const [page, setPage] = useState(parseInt(query.get('page') || '1'));
 
-  const postIds = useAppSelector(selectPostIds);
-  const { status: postsRequestStatus, error: postsRequestError } = useAppSelector(
-    (store) => store.posts.postsRequestStatus,
-  );
-  const totalPostsAmount = useAppSelector((store) => store.posts.total);
+  const posts = useAppSelector(selectPosts);
   const dispatch = useAppDispatch();
 
   const handlePageChange = async (event: React.ChangeEvent<unknown>, value: number) => {
@@ -34,15 +30,15 @@ export function PostCardList() {
 
   const renderPostCardItems = () => (
     <Grid container spacing={{ xs: 2, sm: 4, md: 6 }}>
-      {postIds.map((postId) => (
-        <Grid key={postId} item xs={12} md={6}>
-          <PostCardListItem postId={postId} />
+      {posts.items.map((post) => (
+        <Grid key={post.id} item xs={12} md={6}>
+          <PostCardListItem post={post} />
         </Grid>
       ))}
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
         <Pagination
           size={paginationSize}
-          count={getPagesAmount(totalPostsAmount, postsPageSize)}
+          count={getPagesAmount(posts.total, postsPageSize)}
           page={page}
           onChange={handlePageChange}
           renderItem={(item) => (
@@ -55,12 +51,13 @@ export function PostCardList() {
 
   const renderContent = () => {
     let content = null;
+    const { status, error } = posts.postsRequestStatus;
 
-    if (postsRequestStatus === 'loading') {
+    if (status === 'loading') {
       content = <Loader />;
-    } else if (postsRequestStatus === 'succeeded') {
+    } else if (status === 'succeeded') {
       content = renderPostCardItems();
-    } else if (postsRequestStatus === 'failed' && postsRequestError) {
+    } else if (status === 'failed' && error) {
       content = <ErrorMessage message={postsLoadingFailedMessage} />;
     }
 

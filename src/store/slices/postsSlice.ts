@@ -1,17 +1,17 @@
-import { PayloadAction, createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPosts, getSinglePost } from '../../api/client';
 import { RootState } from '../store';
 import { GetPostsResponse, GetPostsRequestPayload, RequestStatus, Post } from '../../types/types';
 
 interface PostsState {
+  items: Post[];
   total: number;
   postsRequestStatus: RequestStatus;
   singlePostRequestStatus: RequestStatus;
 }
 
-const postsAdapter = createEntityAdapter<Post>();
-
-const initialState = postsAdapter.getInitialState<PostsState>({
+const initialState: PostsState = {
+  items: [],
   total: 0,
   postsRequestStatus: {
     status: 'idle',
@@ -21,7 +21,7 @@ const initialState = postsAdapter.getInitialState<PostsState>({
     status: 'idle',
     error: false,
   },
-});
+};
 
 export const fetchPosts = createAsyncThunk<GetPostsResponse, GetPostsRequestPayload>('posts/fetchPosts', getPosts);
 export const fetchSinglePost = createAsyncThunk<Post, number>('posts/fetchSinglePost', getSinglePost);
@@ -44,7 +44,7 @@ export const postsSlice = createSlice({
       .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<GetPostsResponse>) => {
         state.postsRequestStatus.status = 'succeeded';
         state.total = action.payload.total;
-        postsAdapter.setAll(state, action.payload.posts);
+        state.items = action.payload.posts;
       })
       .addCase(fetchPosts.rejected, (state) => {
         state.postsRequestStatus.status = 'failed';
@@ -56,7 +56,12 @@ export const postsSlice = createSlice({
       })
       .addCase(fetchSinglePost.fulfilled, (state, action: PayloadAction<Post>) => {
         state.singlePostRequestStatus.status = 'succeeded';
-        postsAdapter.setOne(state, action.payload);
+        const postIndex = state.items.findIndex((item) => item.id === action.payload.id);
+        if (postIndex !== -1) {
+          state.items[postIndex] = action.payload;
+        } else {
+          state.items.push(action.payload);
+        }
       })
       .addCase(fetchSinglePost.rejected, (state) => {
         state.singlePostRequestStatus.status = 'failed';
@@ -65,11 +70,9 @@ export const postsSlice = createSlice({
   },
 });
 
-export const {
-  selectAll: selectAllPosts,
-  selectById: selectPostById,
-  selectIds: selectPostIds,
-} = postsAdapter.getSelectors((state: RootState) => state.posts);
+export const selectPosts = (state: RootState) => state.posts;
+export const selectPostById = (state: RootState, id: number | undefined) =>
+  state.posts.items.find((post) => post.id === id);
 
 export const { postDetailsClosed } = postsSlice.actions;
 

@@ -39,8 +39,7 @@ const initialRequestStatus: RequestStatus = {
 
 export const preloadedStateMock: PreloadedState<RootState> = {
   posts: {
-    ids: getIds(postsResponseMock.posts),
-    entities: getEntities(postsResponseMock.posts),
+    items: postsResponseMock.posts,
     total: postsResponseMock.posts.length,
     postsRequestStatus: initialRequestStatus,
     singlePostRequestStatus: initialRequestStatus,
