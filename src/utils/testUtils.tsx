@@ -50,8 +50,7 @@ export const preloadedStateMock: PreloadedState<RootState> = {
     entities: getEntities(usersMock),
   },
   comments: {
-    ids: getIds(commentsResponseMock.comments),
-    entities: getEntities(commentsResponseMock.comments),
+    items: commentsResponseMock.comments,
     total: commentsResponseMock.comments.length,
     commentsRequestStatus: initialRequestStatus,
   },

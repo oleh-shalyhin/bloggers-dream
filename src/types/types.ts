@@ -23,6 +23,12 @@ export interface GetPostCommentsRequestPayload {
   skip: number;
 }
 
+export interface AddPostCommentRequestPayload {
+  postId: number;
+  userId: number;
+  body: string;
+}
+
 export interface Post {
   id: number;
   title: string;

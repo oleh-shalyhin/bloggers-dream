@@ -1,6 +1,7 @@
 import { rest } from 'msw';
-import { getPostCommentsUrl, getPostsUrl, getSinglePostUrl, getUserUrl } from '../api/client';
+import { addPostCommentUrl, getPostCommentsUrl, getPostsUrl, getSinglePostUrl, getUserUrl } from '../api/client';
 import { commentsResponseMock, postsResponseMock, usersMock } from './mocks';
+import { AddPostCommentRequestPayload, Comment } from '../types/types';
 
 export const handlers = [
   rest.get(getPostsUrl, (req, res, ctx) => {
@@ -26,5 +27,19 @@ export const handlers = [
   }),
   rest.get(getPostCommentsUrl, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(commentsResponseMock));
+  }),
+  rest.post(addPostCommentUrl, async (req, res, ctx) => {
+    const payload = await req.json<AddPostCommentRequestPayload>();
+    const user = usersMock[0];
+    const newComment: Comment = {
+      id: new Date().getTime(),
+      body: payload.body,
+      postId: payload.postId,
+      user: {
+        id: user.id,
+        username: user.username,
+      },
+    };
+    return res(ctx.status(200), ctx.json(newComment));
   }),
 ];

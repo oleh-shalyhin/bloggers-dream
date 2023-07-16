@@ -5,6 +5,7 @@ const config = {
     postById: '/posts/:postId',
     userById: '/users/:userId',
     commentsByPostId: '/comments/post/:postId',
+    addPostComment: '/comments/add',
   },
 };
 

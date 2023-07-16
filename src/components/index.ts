@@ -1,3 +1,4 @@
+export * from './AddComment/AddComment';
 export * from './ChipList/ChipList';
 export * from './CommentList/CommentList';
 export * from './CommentListItem/CommentListItem';

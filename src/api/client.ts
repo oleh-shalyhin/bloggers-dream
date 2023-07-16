@@ -1,6 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import config from '../config';
 import {
+  AddPostCommentRequestPayload,
+  Comment,
   GetPostCommentsRequestPayload,
   GetPostCommentsResponse,
   GetPostsRequestPayload,
@@ -15,6 +17,7 @@ export const getPostsUrl = config.baseUrl + config.endpoints.posts;
 export const getSinglePostUrl = config.baseUrl + config.endpoints.postById;
 export const getUserUrl = config.baseUrl + config.endpoints.userById;
 export const getPostCommentsUrl = config.baseUrl + config.endpoints.commentsByPostId;
+export const addPostCommentUrl = config.baseUrl + config.endpoints.addPostComment;
 
 export async function getPosts({ limit, skip }: GetPostsRequestPayload): Promise<GetPostsResponse> {
   const response = await client.get<GetPostsResponse>(getPostsUrl, {
@@ -44,5 +47,10 @@ export async function getPostComments({
   const response = await client.get<GetPostCommentsResponse>(url, {
     params: { limit, skip },
   });
+  return response.data;
+}
+
+export async function addPostComment(payload: AddPostCommentRequestPayload): Promise<Comment> {
+  const response: AxiosResponse<Comment, AddPostCommentRequestPayload> = await client.post(addPostCommentUrl, payload);
   return response.data;
 }

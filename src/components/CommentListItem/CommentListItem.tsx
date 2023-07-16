@@ -1,26 +1,17 @@
 import PersonIcon from '@mui/icons-material/Person';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { EntityId } from '@reduxjs/toolkit';
 import { commentListItem } from '../../constants/testIds';
-import { useAppSelector } from '../../store/hooks';
-import { selectCommentById } from '../../store/slices';
+import { Comment } from '../../types/types';
 
 interface CommentListItemProps {
-  commentId: EntityId;
+  comment: Comment;
 }
 
-export function CommentListItem({ commentId }: CommentListItemProps) {
-  const theme = useTheme();
-  const comment = useAppSelector((state) => selectCommentById(state, commentId));
-
-  if (!comment) {
-    return null;
-  }
-
+export function CommentListItem({ comment }: CommentListItemProps) {
   return (
     <Stack data-testid={commentListItem}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: theme.spacing() }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <PersonIcon sx={{ color: grey[600] }} />
         <Typography variant="subtitle2">{comment.user.username}</Typography>
       </Box>

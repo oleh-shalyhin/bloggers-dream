@@ -2,9 +2,9 @@ import { Box, Divider, Pagination, Stack, Typography, useMediaQuery, useTheme } 
 import { useEffect, useState } from 'react';
 import { commentsPageSize, postCommentsLoadingFailedMessage } from '../../constants/constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchPostComments, selectCommentIds } from '../../store/slices';
+import { fetchPostComments, selectComments } from '../../store/slices';
 import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
-import { CommentListItem, ErrorMessage, Loader } from '../';
+import { AddComment, CommentListItem, ErrorMessage, Loader } from '../';
 
 interface CommentsListProps {
   postId: number;
@@ -19,11 +19,7 @@ export function CommentList({ postId }: CommentsListProps) {
 
   const [page, setPage] = useState(1);
 
-  const commentIds = useAppSelector(selectCommentIds);
-  const commentsTotalAmount = useAppSelector((state) => state.comments.total);
-  const { status: commentsRequestStatus, error: commentsRequestError } = useAppSelector(
-    (store) => store.comments.commentsRequestStatus,
-  );
+  const comments = useAppSelector(selectComments);
   const dispatch = useAppDispatch();
 
   const handlePageChange = async (event: React.ChangeEvent<unknown>, value: number) => {
@@ -38,9 +34,9 @@ export function CommentList({ postId }: CommentsListProps) {
   const renderPostComments = () => (
     <Stack spacing={2}>
       <Stack spacing={1}>
-        {commentIds.map((commentId) => (
-          <Stack key={commentId} spacing={1}>
-            <CommentListItem commentId={commentId} />
+        {comments.items.map((comment) => (
+          <Stack key={comment.id} spacing={1}>
+            <CommentListItem comment={comment} />
             <Divider />
           </Stack>
         ))}
@@ -48,7 +44,7 @@ export function CommentList({ postId }: CommentsListProps) {
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Pagination
           size={paginationSize}
-          count={getPagesAmount(commentsTotalAmount, commentsPageSize)}
+          count={getPagesAmount(comments.total, commentsPageSize)}
           page={page}
           onChange={handlePageChange}
         />
@@ -59,11 +55,11 @@ export function CommentList({ postId }: CommentsListProps) {
   const renderContent = () => {
     let content = null;
 
-    if (commentsRequestStatus === 'loading') {
+    if (comments.commentsRequestStatus.status === 'loading') {
       content = <Loader />;
-    } else if (commentsRequestStatus === 'succeeded') {
+    } else if (comments.commentsRequestStatus.status === 'succeeded') {
       content = renderPostComments();
-    } else if (commentsRequestStatus === 'failed' && commentsRequestError) {
+    } else if (comments.commentsRequestStatus.status === 'failed' && comments.commentsRequestStatus.error) {
       content = <ErrorMessage message={postCommentsLoadingFailedMessage} />;
     }
 
@@ -71,10 +67,11 @@ export function CommentList({ postId }: CommentsListProps) {
   };
 
   return (
-    <Stack>
+    <Stack spacing={1}>
       <Typography variant={titleVariant} component="h3" sx={{ mb: 1 }}>
         Comments
       </Typography>
+      <AddComment postId={postId} />
       {renderContent()}
     </Stack>
   );
