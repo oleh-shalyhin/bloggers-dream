@@ -36,10 +36,8 @@ export function AddComment({ postId }: AddCommentProps) {
       <TextField
         id="post-comment-input"
         label="Add a comment..."
-        size="small"
         multiline
         maxRows={3}
-        sx={{ flex: '1 1 auto' }}
         value={comment}
         onChange={handleCommentChange}
       />
