@@ -32,17 +32,12 @@ export function getEntities<T extends EntityWithId>(list: T[]): Record<EntityId,
   return list.reduce((acc: Record<EntityId, T>, item: T) => ({ ...acc, [item.id]: item }), {});
 }
 
-const initialRequestStatus: RequestStatus = {
-  status: 'idle',
-  error: false,
-};
-
 export const preloadedStateMock: PreloadedState<RootState> = {
   posts: {
     items: postsResponseMock.posts,
     total: postsResponseMock.posts.length,
-    postsRequestStatus: initialRequestStatus,
-    singlePostRequestStatus: initialRequestStatus,
+    postsRequestStatus: 'idle',
+    singlePostRequestStatus: 'idle',
   },
   users: {
     ids: getIds(usersMock),
@@ -51,7 +46,7 @@ export const preloadedStateMock: PreloadedState<RootState> = {
   comments: {
     items: commentsResponseMock.comments,
     total: commentsResponseMock.comments.length,
-    commentsRequestStatus: initialRequestStatus,
+    commentsRequestStatus: 'idle',
   },
 };
 

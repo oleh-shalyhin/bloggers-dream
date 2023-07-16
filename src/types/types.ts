@@ -52,7 +52,4 @@ export interface Comment {
   user: Pick<User, 'id' | 'username'>;
 }
 
-export interface RequestStatus {
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: boolean;
-}
+export type RequestStatus = 'idle' | 'loading' | 'succeeded' | 'failed';

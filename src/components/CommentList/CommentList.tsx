@@ -54,12 +54,13 @@ export function CommentList({ postId }: CommentsListProps) {
 
   const renderContent = () => {
     let content = null;
+    const { commentsRequestStatus: status } = comments;
 
-    if (comments.commentsRequestStatus.status === 'loading') {
+    if (status === 'loading') {
       content = <Loader />;
-    } else if (comments.commentsRequestStatus.status === 'succeeded') {
+    } else if (status === 'succeeded') {
       content = renderPostComments();
-    } else if (comments.commentsRequestStatus.status === 'failed' && comments.commentsRequestStatus.error) {
+    } else if (status === 'failed') {
       content = <ErrorMessage message={postCommentsLoadingFailedMessage} />;
     }
 

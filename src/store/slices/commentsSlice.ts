@@ -19,10 +19,7 @@ interface CommentsState {
 const initialState: CommentsState = {
   items: [],
   total: 0,
-  commentsRequestStatus: {
-    status: 'idle',
-    error: false,
-  },
+  commentsRequestStatus: 'idle',
 };
 
 export const fetchPostComments = createAsyncThunk<GetPostCommentsResponse, GetPostCommentsRequestPayload>(
@@ -42,17 +39,15 @@ export const commentsSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchPostComments.pending, (state) => {
-        state.commentsRequestStatus.status = 'loading';
-        state.commentsRequestStatus.error = false;
+        state.commentsRequestStatus = 'loading';
       })
       .addCase(fetchPostComments.fulfilled, (state, action: PayloadAction<GetPostCommentsResponse>) => {
-        state.commentsRequestStatus.status = 'succeeded';
+        state.commentsRequestStatus = 'succeeded';
         state.total = action.payload.total;
         state.items = action.payload.comments;
       })
       .addCase(fetchPostComments.rejected, (state) => {
-        state.commentsRequestStatus.status = 'failed';
-        state.commentsRequestStatus.error = true;
+        state.commentsRequestStatus = 'failed';
       })
       .addCase(addNewComment.fulfilled, (state, action: PayloadAction<Comment>) => {
         state.total += 1;

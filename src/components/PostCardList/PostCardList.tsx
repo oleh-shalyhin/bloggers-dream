@@ -51,13 +51,13 @@ export function PostCardList() {
 
   const renderContent = () => {
     let content = null;
-    const { status, error } = posts.postsRequestStatus;
+    const { postsRequestStatus: status } = posts;
 
     if (status === 'loading') {
       content = <Loader />;
     } else if (status === 'succeeded') {
       content = renderPostCardItems();
-    } else if (status === 'failed' && error) {
+    } else if (status === 'failed') {
       content = <ErrorMessage message={postsLoadingFailedMessage} />;
     }
 

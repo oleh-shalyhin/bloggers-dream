@@ -13,14 +13,8 @@ interface PostsState {
 const initialState: PostsState = {
   items: [],
   total: 0,
-  postsRequestStatus: {
-    status: 'idle',
-    error: false,
-  },
-  singlePostRequestStatus: {
-    status: 'idle',
-    error: false,
-  },
+  postsRequestStatus: 'idle',
+  singlePostRequestStatus: 'idle',
 };
 
 export const fetchPosts = createAsyncThunk<GetPostsResponse, GetPostsRequestPayload>('posts/fetchPosts', getPosts);
@@ -31,31 +25,27 @@ export const postsSlice = createSlice({
   initialState,
   reducers: {
     postDetailsClosed(state) {
-      state.singlePostRequestStatus.status = 'idle';
-      state.singlePostRequestStatus.error = false;
+      state.singlePostRequestStatus = 'idle';
     },
   },
   extraReducers(builder) {
     builder
       .addCase(fetchPosts.pending, (state) => {
-        state.postsRequestStatus.status = 'loading';
-        state.postsRequestStatus.error = false;
+        state.postsRequestStatus = 'loading';
       })
       .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<GetPostsResponse>) => {
-        state.postsRequestStatus.status = 'succeeded';
+        state.postsRequestStatus = 'succeeded';
         state.total = action.payload.total;
         state.items = action.payload.posts;
       })
       .addCase(fetchPosts.rejected, (state) => {
-        state.postsRequestStatus.status = 'failed';
-        state.postsRequestStatus.error = true;
+        state.postsRequestStatus = 'failed';
       })
       .addCase(fetchSinglePost.pending, (state) => {
-        state.singlePostRequestStatus.status = 'loading';
-        state.singlePostRequestStatus.error = false;
+        state.singlePostRequestStatus = 'loading';
       })
       .addCase(fetchSinglePost.fulfilled, (state, action: PayloadAction<Post>) => {
-        state.singlePostRequestStatus.status = 'succeeded';
+        state.singlePostRequestStatus = 'succeeded';
         const postIndex = state.items.findIndex((item) => item.id === action.payload.id);
         if (postIndex !== -1) {
           state.items[postIndex] = action.payload;
@@ -64,8 +54,7 @@ export const postsSlice = createSlice({
         }
       })
       .addCase(fetchSinglePost.rejected, (state) => {
-        state.singlePostRequestStatus.status = 'failed';
-        state.singlePostRequestStatus.error = true;
+        state.singlePostRequestStatus = 'failed';
       });
   },
 });

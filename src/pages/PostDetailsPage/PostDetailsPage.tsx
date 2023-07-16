@@ -11,7 +11,7 @@ export function PostDetailsPage() {
   const { postId: postIdParam } = useParams();
   const postId = postIdParam ? parseInt(postIdParam) : undefined;
   const post = useAppSelector((state) => selectPostById(state, postId));
-  const singlePostRequestStatus = useAppSelector((state) => state.posts.singlePostRequestStatus);
+  const status = useAppSelector((state) => state.posts.singlePostRequestStatus);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -42,13 +42,12 @@ export function PostDetailsPage() {
 
   const renderContent = () => {
     let content = null;
-    const { status, error } = singlePostRequestStatus;
 
     if (status === 'loading') {
       content = <Loader />;
     } else if (status === 'succeeded') {
       content = renderPostDetails();
-    } else if (status === 'failed' && error) {
+    } else if (status === 'failed') {
       content = <ErrorMessage message={singlePostLoadingFailedMessage} />;
     }
 
