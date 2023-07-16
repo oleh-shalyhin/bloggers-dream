@@ -1,6 +1,6 @@
 import { Box, Divider, Pagination, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { commentsPageSize, postCommentsLoadingFailedMessage } from '../../constants/constants';
+import { commentsPageSize, noCommentsMessage, postCommentsLoadingFailedMessage } from '../../constants/constants';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchPostComments, selectComments } from '../../store/slices';
 import { getPagesAmount, getSkipItemsAmount } from '../../utils/utils';
@@ -33,6 +33,7 @@ export function CommentList({ postId }: CommentsListProps) {
 
   const renderPostComments = () => (
     <Stack spacing={2}>
+      <AddComment postId={postId} />
       <Stack spacing={1}>
         {comments.items.map((comment) => (
           <Stack key={comment.id} spacing={1}>
@@ -58,6 +59,8 @@ export function CommentList({ postId }: CommentsListProps) {
 
     if (status === 'loading') {
       content = <Loader />;
+    } else if (status === 'succeeded' && comments.items.length === 0) {
+      content = <Typography variant="body1">{noCommentsMessage}</Typography>;
     } else if (status === 'succeeded') {
       content = renderPostComments();
     } else if (status === 'failed') {
@@ -72,7 +75,6 @@ export function CommentList({ postId }: CommentsListProps) {
       <Typography variant={titleVariant} component="h3" sx={{ mb: 1 }}>
         Comments
       </Typography>
-      <AddComment postId={postId} />
       {renderContent()}
     </Stack>
   );

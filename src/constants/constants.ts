@@ -8,3 +8,4 @@ export const singlePostLoadingFailedMessage =
 export const postCommentsLoadingFailedMessage =
   'Unfortunately, post comments failed to load. To fix this, please refresh the page.';
 export const addPostCommentFailedMessage = "Your comment hasn't been posted, please try again.";
+export const noCommentsMessage = 'No comments yet.';

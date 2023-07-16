@@ -2,7 +2,11 @@ import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { addPostCommentUrl, getPostCommentsUrl } from '../../api/client';
-import { addPostCommentFailedMessage, postCommentsLoadingFailedMessage } from '../../constants/constants';
+import {
+  addPostCommentFailedMessage,
+  noCommentsMessage,
+  postCommentsLoadingFailedMessage,
+} from '../../constants/constants';
 import { commentListItem } from '../../constants/testIds';
 import { commentsResponseMock, postsResponseMock, usersMock } from '../../mocks/mocks';
 import { Comment } from '../../types/types';
@@ -44,6 +48,20 @@ test('renders list of comments', async () => {
   expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });
 
+test('renders message when post has no comments', async () => {
+  server.use(
+    rest.get(getPostCommentsUrl, (req, res, ctx) => {
+      return res(ctx.status(200), ctx.json({ ...commentsResponseMock, comments: [], total: 0 }));
+    }),
+  );
+  renderWithProviders(<CommentList postId={post.id} />);
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  expect(await screen.findByText(noCommentsMessage)).toBeInTheDocument();
+  expect(screen.queryByTestId(commentListItem)).not.toBeInTheDocument();
+  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+});
+
 test('renders error message when failed to fetch comments', async () => {
   server.use(
     rest.get(getPostCommentsUrl, (req, res, ctx) => {
@@ -55,6 +73,7 @@ test('renders error message when failed to fetch comments', async () => {
   expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(/comments/i);
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
   expect(await screen.findByText(postCommentsLoadingFailedMessage)).toBeInTheDocument();
+  expect(screen.queryByRole('textbox', { name: /add a comment.../i })).not.toBeInTheDocument();
   expect(screen.queryByTestId(commentListItem)).not.toBeInTheDocument();
   expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });
