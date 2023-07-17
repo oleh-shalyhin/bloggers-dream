@@ -1,11 +1,15 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getPosts, getSinglePost } from '../../api/client';
+import { getPosts, getSinglePost, searchPostsByText } from '../../api/client';
+import { postsPageSize } from '../../constants/constants';
 import { RootState } from '../store';
-import { GetPostsResponse, GetPostsRequestPayload, RequestStatus, Post } from '../../types/types';
+import { GetPostsResponse, Post, RequestStatus } from '../../types/types';
+import { getSkipItemsAmount } from '../../utils/utils';
 
 interface PostsState {
   items: Post[];
   total: number;
+  searchText: string;
+  page: number;
   postsRequestStatus: RequestStatus;
   singlePostRequestStatus: RequestStatus;
 }
@@ -13,17 +17,31 @@ interface PostsState {
 const initialState: PostsState = {
   items: [],
   total: 0,
+  searchText: '',
+  page: 1,
   postsRequestStatus: 'idle',
   singlePostRequestStatus: 'idle',
 };
 
-export const fetchPosts = createAsyncThunk<GetPostsResponse, GetPostsRequestPayload>('posts/fetchPosts', getPosts);
+export const fetchPosts = createAsyncThunk<GetPostsResponse, undefined>('posts/fetchPosts', (_, { getState }) => {
+  const state = getState() as RootState;
+  const { page, searchText } = state.posts;
+  const skip = getSkipItemsAmount(page, postsPageSize);
+  const payload = { limit: postsPageSize, skip };
+  return searchText ? searchPostsByText({ ...payload, q: searchText }) : getPosts(payload);
+});
 export const fetchSinglePost = createAsyncThunk<Post, number>('posts/fetchSinglePost', getSinglePost);
 
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
+    searchTextChanged(state, action: PayloadAction<string>) {
+      state.searchText = action.payload;
+    },
+    pageChanged(state, action: PayloadAction<number>) {
+      state.page = action.payload;
+    },
     postDetailsClosed(state) {
       state.singlePostRequestStatus = 'idle';
     },
@@ -63,6 +81,6 @@ export const selectPosts = (state: RootState) => state.posts;
 export const selectPostById = (state: RootState, id: number | undefined) =>
   state.posts.items.find((post) => post.id === id);
 
-export const { postDetailsClosed } = postsSlice.actions;
+export const { pageChanged, postDetailsClosed, searchTextChanged } = postsSlice.actions;
 
 export const postsReducer = postsSlice.reducer;

@@ -12,15 +12,17 @@ export interface GetPostCommentsResponse extends PagedResponse {
   comments: Comment[];
 }
 
-export interface GetPostsRequestPayload {
+export interface PagedRequestPayload {
   limit: number;
   skip: number;
 }
 
-export interface GetPostCommentsRequestPayload {
+export interface SearchPostsRequestPayload extends PagedRequestPayload {
+  q: string;
+}
+
+export interface GetPostCommentsRequestPayload extends PagedRequestPayload {
   postId: number;
-  limit: number;
-  skip: number;
 }
 
 export interface AddPostCommentRequestPayload {

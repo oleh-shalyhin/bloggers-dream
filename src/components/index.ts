@@ -8,3 +8,4 @@ export * from './PostCardList/PostCardList';
 export * from './PostCardListItem/PostCardListItem';
 export * from './PostDetails/PostDetails';
 export * from './ReactionsCounter/ReactionsCounter';
+export * from './SearchPosts/SearchPosts';

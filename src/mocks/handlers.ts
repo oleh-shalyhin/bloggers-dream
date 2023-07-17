@@ -1,11 +1,25 @@
 import { rest } from 'msw';
-import { addPostCommentUrl, getPostCommentsUrl, getPostsUrl, getSinglePostUrl, getUserUrl } from '../api/client';
+import {
+  addPostCommentUrl,
+  getPostCommentsUrl,
+  getPostsUrl,
+  getSinglePostUrl,
+  getUserUrl,
+  searchPostsUrl,
+} from '../api/client';
 import { commentsResponseMock, postsResponseMock, usersMock } from './mocks';
 import { AddPostCommentRequestPayload, Comment } from '../types/types';
 
 export const handlers = [
   rest.get(getPostsUrl, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(postsResponseMock));
+  }),
+  rest.get(searchPostsUrl, (req, res, ctx) => {
+    const query = req.url.searchParams;
+    const searchText = query.get('q');
+    const newPosts = postsResponseMock.posts.filter((post) => post.body.includes(searchText as string));
+
+    return res(ctx.status(200), ctx.json({ ...postsResponseMock, posts: newPosts, total: newPosts.length }));
   }),
   rest.get(getSinglePostUrl, (req, res, ctx) => {
     const { postId } = req.params;

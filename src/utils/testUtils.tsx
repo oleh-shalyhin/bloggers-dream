@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { RouteObject, RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { commentsResponseMock, postsResponseMock, usersMock } from '../mocks/mocks';
 import { AppStore, RootState, setupStore } from '../store/store';
-import { RequestStatus } from '../types/types';
 
 export interface EntityWithId {
   id: EntityId;
@@ -38,6 +37,8 @@ export const preloadedStateMock: PreloadedState<RootState> = {
     total: postsResponseMock.posts.length,
     postsRequestStatus: 'idle',
     singlePostRequestStatus: 'idle',
+    searchText: '',
+    page: 1,
   },
   users: {
     ids: getIds(usersMock),

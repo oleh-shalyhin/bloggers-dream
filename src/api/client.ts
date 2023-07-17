@@ -5,23 +5,32 @@ import {
   Comment,
   GetPostCommentsRequestPayload,
   GetPostCommentsResponse,
-  GetPostsRequestPayload,
   GetPostsResponse,
+  PagedRequestPayload,
   Post,
+  SearchPostsRequestPayload,
   User,
 } from '../types/types';
 
 const client = axios.create({});
 
 export const getPostsUrl = config.baseUrl + config.endpoints.posts;
+export const searchPostsUrl = config.baseUrl + config.endpoints.searchPosts;
 export const getSinglePostUrl = config.baseUrl + config.endpoints.postById;
 export const getUserUrl = config.baseUrl + config.endpoints.userById;
 export const getPostCommentsUrl = config.baseUrl + config.endpoints.commentsByPostId;
 export const addPostCommentUrl = config.baseUrl + config.endpoints.addPostComment;
 
-export async function getPosts({ limit, skip }: GetPostsRequestPayload): Promise<GetPostsResponse> {
+export async function getPosts({ limit, skip }: PagedRequestPayload): Promise<GetPostsResponse> {
   const response = await client.get<GetPostsResponse>(getPostsUrl, {
     params: { limit, skip },
+  });
+  return response.data;
+}
+
+export async function searchPostsByText(payload: SearchPostsRequestPayload): Promise<GetPostsResponse> {
+  const response = await client.get<GetPostsResponse>(searchPostsUrl, {
+    params: payload,
   });
   return response.data;
 }
